@@ -88,4 +88,13 @@ public class TripPlanner extends AppCompatActivity implements MediumPickerDialog
         byte[] imageAsBytes = Base64.decode(image.getBytes(), Base64.DEFAULT);
         means.setImageBitmap(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length));
     }
+
+    public void applyPic(int id) {
+        if (id == 1) {
+            means.setImageResource(R.drawable.bus);
+        }
+        if (id == 2) {
+            means.setImageResource(R.drawable.aero4);
+        }
+    }
 }
