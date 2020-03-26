@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "684895248068",
+    "firebase_url": "https://holiday-45d90.firebaseio.com",
+    "project_id": "holiday-45d90",
+    "storage_bucket": "holiday-45d90.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:684895248068:android:be670250c75b3b76f87391",
+        "android_client_info": {
+          "package_name": "com.example.holiday"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "684895248068-sr3l6pa3c24lhqfsj0cup94lddkg6f9a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.holiday",
+            "certificate_hash": "4db1d8efb7621dd0f3533f1be139aba1d978ecee"
+          }
+        },
+        {
+          "client_id": "684895248068-v89cgudoejcg7pbs6cfqs0ep61n7me3v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsLruJ_cRsS9O_fCj075AszWi1Z1IPW58"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "684895248068-v89cgudoejcg7pbs6cfqs0ep61n7me3v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

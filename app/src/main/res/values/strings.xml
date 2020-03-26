@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Holiday</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_explore">Explore</string>
+    <string name="nav_plans">My Plans</string>
+    <string name="nav_account">Account</string>
+    <string name="places_api_key">AIzaSyDtiGcU0bCBr38I2Bvha2IB1-IwoPNC0AI</string>
+    <string-array name="images">
+        <item>@drawable/explore</item>
+    </string-array>
+</resources>
