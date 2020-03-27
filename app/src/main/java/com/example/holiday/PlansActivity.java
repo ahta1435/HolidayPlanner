@@ -88,7 +88,7 @@ public class PlansActivity extends AppCompatActivity{
                 String dur=myPlans.getDuration();
                 duration.setText(dur);
                 String bud=myPlans.getBudget();
-                budget.setText(bud);
+                budget.setText("BUDGET:$"+bud);
                 String imageUrl=myPlans.getImage();
             Glide.with(means).load(imageUrl).into(means);
         }
