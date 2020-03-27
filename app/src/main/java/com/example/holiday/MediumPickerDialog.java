@@ -51,9 +51,9 @@ public class MediumPickerDialog extends AppCompatDialogFragment  {
             @Override
             public void onClick(View v) {
                 id = 3;
-                bus.setBackgroundColor(getResources().getColor(R.color.blue));
+                bus.setBackgroundColor(getResources().getColor(R.color.white));
                 aero.setBackgroundColor(getResources().getColor(R.color.white));
-                train.setBackgroundColor(getResources().getColor(R.color.white));
+                train.setBackgroundColor(getResources().getColor(R.color.blue));
             }
         });
 

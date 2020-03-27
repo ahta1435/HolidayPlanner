@@ -107,12 +107,12 @@ public class TripPlanner extends AppCompatActivity implements MediumPickerDialog
                     resources.getResourceEntryName(R.drawable.bus) );
             }
         if (id == 2) {
-            means.setImageResource(R.drawable.aero4);
+            means.setImageResource(R.drawable.aircraft);
         Resources resources = means.getResources();
         imageUri=Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://"
-                + resources.getResourcePackageName(R.drawable.aero4) + '/' +
-                resources.getResourceTypeName(R.drawable.aero4) + '/' +
-                resources.getResourceEntryName(R.drawable.aero4) );
+                + resources.getResourcePackageName(R.drawable.aircraft) + '/' +
+                resources.getResourceTypeName(R.drawable.aircraft) + '/' +
+                resources.getResourceEntryName(R.drawable.aircraft) );
 
         }
         if(id==3){

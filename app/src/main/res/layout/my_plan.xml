@@ -64,13 +64,6 @@
             android:orientation="horizontal"
             >
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Budget:$"
-                android:layout_margin="16dp"
-                android:padding="16dp"
-                />
-            <TextView
                 android:id="@+id/budget_of_trip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
