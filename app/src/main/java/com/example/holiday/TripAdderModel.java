@@ -2,32 +2,44 @@ package com.example.holiday;
 
 public class TripAdderModel {
     String id;
-    String Destination;
-    String NumberOfPeople;
-    String Duration;
+    String starting;
+    String destination;
+    String duration;
+    String budget;
+    String image;
+    public  TripAdderModel(){
 
-
+    }
+    public TripAdderModel(String id, String starting, String destination, String duration, String budget, String image) {
+        this.id = id;
+        this.starting = starting;
+        this.destination = destination;
+        this.duration = duration;
+        this.budget = budget;
+        this.image = image;
+    }
     public String getId() {
         return id;
     }
-    public TripAdderModel(String id, String destination, String numberOfPeople, String duration) {
-        this.id = id;
-        Destination = destination;
-        NumberOfPeople = numberOfPeople;
-        Duration = duration;
-    }
-    public String getDestination() {
-        return Destination;
+
+    public String getStarting() {
+        return starting;
     }
 
-    public String getNumberOfPeople() {
-        return NumberOfPeople;
+    public String getDestination() {
+        return destination;
     }
 
     public String getDuration() {
-        return Duration;
+        return duration;
     }
-    public TripAdderModel(){
 
+    public String getBudget() {
+        return budget;
     }
+
+    public String getImage() {
+        return image;
+    }
+
 }

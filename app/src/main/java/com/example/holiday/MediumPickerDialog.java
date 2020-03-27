@@ -17,14 +17,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 
 import com.example.holiday.TripPlanner;
 
 public class MediumPickerDialog extends AppCompatDialogFragment  {
-    private ImageView image;
-    private ImageView bus, aero;
+    private ImageView bus, aero, train;
     private MediumDialog mediumDialog;
-    Bitmap bitmap;
     int id = 1;
     @NonNull
     @Override
@@ -37,6 +36,7 @@ public class MediumPickerDialog extends AppCompatDialogFragment  {
 
         bus = view.findViewById(R.id.bus);
         aero = view.findViewById(R.id.plane);
+        train=view.findViewById(R.id.train);
 
         bus.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,6 +44,16 @@ public class MediumPickerDialog extends AppCompatDialogFragment  {
                 id = 1;
                 bus.setBackgroundColor(getResources().getColor(R.color.blue));
                 aero.setBackgroundColor(getResources().getColor(R.color.white));
+                train.setBackgroundColor(getResources().getColor(R.color.white));
+            }
+        });
+        train.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                id = 3;
+                bus.setBackgroundColor(getResources().getColor(R.color.blue));
+                aero.setBackgroundColor(getResources().getColor(R.color.white));
+                train.setBackgroundColor(getResources().getColor(R.color.white));
             }
         });
 
@@ -53,6 +63,7 @@ public class MediumPickerDialog extends AppCompatDialogFragment  {
                 id = 2;
                 aero.setBackgroundColor(getResources().getColor(R.color.blue));
                 bus.setBackgroundColor(getResources().getColor(R.color.white));
+                train.setBackgroundColor(getResources().getColor(R.color.white));
             }
         });
         builder.setView(view).
@@ -65,18 +76,13 @@ public class MediumPickerDialog extends AppCompatDialogFragment  {
                 }).setPositiveButton("ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                /*ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream); //compress to which format you want.
-                byte[] byte_arr = stream.toByteArray();
-                String  image= Base64.encodeToString(byte_arr, 1);*/
-                //mediumDialog.applyText(image);
-                mediumDialog.applyPic(id);
+                try{mediumDialog.applyPic(id);}catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         });
-        image=view.findViewById(R.id.bus);
         return builder.create();
     }
-
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -86,9 +92,7 @@ public class MediumPickerDialog extends AppCompatDialogFragment  {
             e.printStackTrace();
         }
     }
-
     public interface MediumDialog{
-        void applyText(String image);
-        void applyPic(int id);
+        void applyPic(int id) throws FileNotFoundException;
     }
 }

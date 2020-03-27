@@ -5,13 +5,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
@@ -66,21 +69,28 @@ public class PlansActivity extends AppCompatActivity{
     }
 
     public static class PlansViewHolder extends RecyclerView.ViewHolder{
-        private TextView Destination, duration, noOfTravellers;
+        private TextView start, destin, duration,budget;
+        private ImageView means;
         public PlansViewHolder(@NonNull View itemView) {
             super(itemView);
-            Destination=itemView.findViewById(R.id.dest);
-           duration=itemView.findViewById(R.id.numberOfDays);
-            noOfTravellers=itemView.findViewById(R.id.no_of_people);
+            start=itemView.findViewById(R.id.from);
+            destin=itemView.findViewById(R.id.to);
+            means=itemView.findViewById(R.id.means);
+            duration=itemView.findViewById(R.id.duration_of_trip);
+            budget=itemView.findViewById(R.id.budget_of_trip);
         }
 
         void setMyPlans(MyPlans myPlans) {
-            String destination = myPlans.getDestination();
-            Destination.setText(destination);
-            String duration_dur= myPlans.getDuration();
-            duration.setText(duration_dur);
-            String  travellers= myPlans.getNumberOfPeople();
-            noOfTravellers.setText(travellers);
+                String st=myPlans.getStarting();
+                 start.setText(st);
+                String dest=myPlans.getDestination();
+                destin.setText(dest);
+                String dur=myPlans.getDuration();
+                duration.setText(dur);
+                String bud=myPlans.getBudget();
+                budget.setText(bud);
+                String imageUrl=myPlans.getImage();
+            Glide.with(means).load(imageUrl).into(means);
         }
     }
 }
