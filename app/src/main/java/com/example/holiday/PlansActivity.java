@@ -6,17 +6,30 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
@@ -24,16 +37,40 @@ import com.google.firebase.database.Query;
 public class PlansActivity extends AppCompatActivity{
    private RecyclerView planList;
    private DatabaseReference databaseReference;
+   private FirebaseAuth mAuth;
    private FirebaseRecyclerAdapter<MyPlans,PlansViewHolder> firebaseRecyclerAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plans);
+        mAuth=FirebaseAuth.getInstance();
+        FirebaseUser firebaseUser=mAuth.getCurrentUser();
+        String userid=firebaseUser.getUid();
         planList=(RecyclerView)findViewById(R.id.my_planning);
         planList.setHasFixedSize(true);
         planList.setLayoutManager(new LinearLayoutManager(this));
         databaseReference= FirebaseDatabase.getInstance().getReference();
-        Query query=databaseReference.child("YourTrip");
+        Query query=databaseReference.child("YourTrip").child(userid);
+        BottomNavigationView navigationView=findViewById(R.id.btm_nav);
+        Menu menu=navigationView.getMenu();
+        MenuItem menuItem=menu.getItem(2);
+        menuItem.setChecked(true);
+        navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                int id = menuItem.getItemId();
+                if(id==R.id.home){
+                    startActivity(new Intent(getApplicationContext(),HomeActivity.class));
+                }
+                if (id == R.id.explore) {
+                    startActivity(new Intent(getApplicationContext(),ExploreActivity.class));
+                }
+                if (id == R.id.my_account) {
+                    startActivity(new Intent(getApplicationContext(),AccountsActivity.class));
+                }
+                return false;
+            }
+        });
         FirebaseRecyclerOptions<MyPlans> firebaseRecyclerOptions = new FirebaseRecyclerOptions.Builder<MyPlans>()
                 .setQuery(query, MyPlans.class)
                 .build();
@@ -48,6 +85,32 @@ public class PlansActivity extends AppCompatActivity{
             }
             @Override
             protected void onBindViewHolder(@NonNull PlansViewHolder holder, int position, @NonNull MyPlans model) {
+
+                                    holder.btn_cancel.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            FirebaseDatabase.getInstance().getReference()
+                                                    .child("YourTrip")
+                                                    .child(userid)
+                                                    .child(getRef(position).getKey())
+                                                    .removeValue()
+                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                               if(task.isSuccessful()){
+                                                                   Toast.makeText(PlansActivity.this,"Successfully cancelled",
+                                                                           Toast.LENGTH_LONG).show();
+                                                               }else{
+                                                                   String error=task.getException().getMessage();
+                                                                   Toast.makeText(PlansActivity.this,"Error:"+error,
+                                                                           Toast.LENGTH_LONG).show();
+                                                               }
+                                                        }
+                                                    });
+                                        }
+                                    });
+
+
                                       holder.setMyPlans(model);
             }
         };
@@ -67,10 +130,10 @@ public class PlansActivity extends AppCompatActivity{
             firebaseRecyclerAdapter.stopListening();
         }
     }
-
     public static class PlansViewHolder extends RecyclerView.ViewHolder{
         private TextView start, destin, duration,budget;
         private ImageView means;
+        private Button btn_cancel;
         public PlansViewHolder(@NonNull View itemView) {
             super(itemView);
             start=itemView.findViewById(R.id.from);
@@ -78,15 +141,16 @@ public class PlansActivity extends AppCompatActivity{
             means=itemView.findViewById(R.id.means);
             duration=itemView.findViewById(R.id.duration_of_trip);
             budget=itemView.findViewById(R.id.budget_of_trip);
-        }
+            btn_cancel=itemView.findViewById(R.id.btn_del);
 
+        }
         void setMyPlans(MyPlans myPlans) {
                 String st=myPlans.getStarting();
                  start.setText(st);
                 String dest=myPlans.getDestination();
                 destin.setText(dest);
                 String dur=myPlans.getDuration();
-                duration.setText(dur);
+                duration.setText(dur+"Days");
                 String bud=myPlans.getBudget();
                 budget.setText("BUDGET:$"+bud);
                 String imageUrl=myPlans.getImage();

@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".HomeActivity">
-
         <com.mancj.materialsearchbar.MaterialSearchBar
             style="@style/MaterialSearchBarLight"
             app:mt_speechMode="false"
@@ -21,36 +20,37 @@
             app:mt_navIconEnabled="true"/>
 
         <TextView
+            android:id="@+id/one"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="6dp"
             android:layout_marginRight="16dp"
             android:gravity="center"
+            android:layout_below="@+id/searchBar"
             android:text="not sure?"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textSize="14sp" />
-
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="6dp"
             android:layout_marginRight="16dp"
+            android:layout_below="@+id/one"
+            android:id="@+id/two"
             android:gravity="center"
             android:text="Go to explore tab to see suggestions"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textSize="14sp" />
-
         <LinearLayout
             android:id="@+id/view"
+            android:layout_below="@+id/two"
             android:layout_width="match_parent"
-            android:layout_height="450dp"
+            android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:elevation="2dp"
             android:orientation="vertical"
             android:background="@color/cardview_light_background">
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -58,14 +58,12 @@
                 android:layout_margin="16dp"
                 android:text="Get Personalised Trip"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large" />
-
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:layout_gravity="center"
                 android:src="@drawable/ballon" />
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -74,7 +72,6 @@
                 android:text="Let us know the basic details and we will"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textSize="14sp" />
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -92,7 +89,12 @@
                 android:text="Plan My Trip"
                 android:clickable="true"
                 />
-
         </LinearLayout>
-
-</LinearLayout>
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/btm_nav"
+            android:layout_width="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_height="wrap_content"
+            android:elevation="5dp"
+            app:menu="@menu/nav_items" />
+</RelativeLayout>
