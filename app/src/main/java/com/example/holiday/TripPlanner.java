@@ -20,6 +20,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -40,6 +42,7 @@ public class TripPlanner extends AppCompatActivity implements MediumPickerDialog
     private Uri imageUri=null;
     private DatabaseReference databaseReference;
     private StorageReference storageReference;
+    private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +56,7 @@ public class TripPlanner extends AppCompatActivity implements MediumPickerDialog
         budget = (EditText) findViewById(R.id.budget_of_trip);
         means = (ImageView) findViewById(R.id.medium);
         submit=(Button)findViewById(R.id.plan);
+        mAuth=FirebaseAuth.getInstance();
         means.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,34 +67,39 @@ public class TripPlanner extends AppCompatActivity implements MediumPickerDialog
          @Override
         public void onClick(View v) {
         startPlanning();
+        Intent intent=new Intent(TripPlanner.this,PlansActivity.class);
+            startActivity(intent);
          }
         });
     }
+    //adding the trip to the firebase realtime database
     private void startPlanning() {
-              String start=starting.getText().toString().trim();
-              String dest=destination.getText().toString().trim();
-              String journey=duration.getText().toString().trim();
-              String money=budget.getText().toString().trim();
+        FirebaseUser firebaseUser=mAuth.getCurrentUser();
+            String uid=firebaseUser.getUid();
+            String start = starting.getText().toString().trim();
+            String dest = destination.getText().toString().trim();
+            String journey = duration.getText().toString().trim();
+            String money = budget.getText().toString().trim();
 
-                 StorageReference filepath=storageReference.child("Transport").child(imageUri.getLastPathSegment());
-                 filepath.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                     @Override
-                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                           filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                               @Override
-                               public void onSuccess(Uri uri) {
-                                 String images=String.valueOf(uri);
-                                 if(!TextUtils.isEmpty(start)&&!TextUtils.isEmpty(dest)
-                                   &&!TextUtils.isEmpty(journey)&&!TextUtils.isEmpty(money)&&!TextUtils.isEmpty(images)){
-                                      String id=databaseReference.push().getKey();
-                                      TripAdderModel trip=new TripAdderModel(id,start,dest,journey,money,images);
-                                      databaseReference.child(id).setValue(trip);
+            StorageReference filepath = storageReference.child("Transport").child(imageUri.getLastPathSegment());
+            filepath.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            String images = String.valueOf(uri);
+                            if (!TextUtils.isEmpty(start) && !TextUtils.isEmpty(dest)
+                                    && !TextUtils.isEmpty(journey) && !TextUtils.isEmpty(money) && !TextUtils.isEmpty(images)) {
+                                String id=databaseReference.push().getKey();
+                                TripAdderModel trip = new TripAdderModel(id, start, dest, journey, money, images);
+                                databaseReference.child(uid).child(id).setValue(trip);
+                            }
+                        }
+                    });
+                }
+            });
 
-                                 }
-                               }
-                           });
-                     }
-                 });
     }
     public void startMediumPicker() {
         MediumPickerDialog mediumPickerDialog = new MediumPickerDialog();

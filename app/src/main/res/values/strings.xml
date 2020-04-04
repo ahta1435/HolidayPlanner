@@ -5,6 +5,7 @@
     <string name="nav_plans">My Plans</string>
     <string name="nav_account">Account</string>
     <string name="places_api_key">AIzaSyDtiGcU0bCBr38I2Bvha2IB1-IwoPNC0AI</string>
+    <string name="FLIGHT_API_KEY">6ce8c60958cfc05ab2ea39a5d2ad8f19</string>
     <string-array name="images">
         <item>@drawable/explore</item>
     </string-array>

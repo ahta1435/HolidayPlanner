@@ -31,8 +31,6 @@ public class MediumPickerDialog extends AppCompatDialogFragment  {
         AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
         LayoutInflater inflater=getActivity().getLayoutInflater();
         View view=inflater.inflate(R.layout.dialog_fragment,null);
-        //BitmapDrawable drawable = (BitmapDrawable) image.getDrawable();
-        //bitmap = drawable.getBitmap();
 
         bus = view.findViewById(R.id.bus);
         aero = view.findViewById(R.id.plane);
