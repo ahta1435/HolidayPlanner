@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SignUpActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="3482dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="348dp"
+        android:background="@drawable/linear_layout"
+        android:elevation="2dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="16dp"
+            android:text="SignUp"
+            android:textColor="@color/colorDark"
+            android:textSize="14sp" />
+        <EditText
+            android:id="@+id/new_user_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center"
+            android:background="@drawable/btn_bg"
+            android:gravity="center_horizontal|center"
+            android:hint="Enter User name "
+            android:padding="16dp"
+            tools:layout_editor_absoluteX="23dp"
+            tools:layout_editor_absoluteY="278dp" />
+        <EditText
+            android:id="@+id/new_user_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center"
+            android:background="@drawable/btn_bg"
+            android:gravity="center_horizontal|center"
+            android:hint="Enter User Id"
+            android:layout_marginTop="10dp"
+            android:padding="16dp"
+            tools:layout_editor_absoluteX="23dp"
+            tools:layout_editor_absoluteY="278dp" />
+
+        <EditText
+            android:id="@+id/new_user_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/btn_bg"
+            android:gravity="center_horizontal|center"
+            android:hint="Enter password"
+            android:inputType="textWebPassword"
+            android:padding="16dp" />
+        <EditText
+            android:id="@+id/confirm_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/btn_bg"
+            android:gravity="center_horizontal|center"
+            android:hint="Confirm password"
+            android:inputType="textWebPassword"
+            android:padding="16dp" />
+
+        <Button
+            android:id="@+id/create_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/btn_login"
+            android:clickable="true"
+            android:padding="16dp"
+            android:text="create" />
+
+        <TextView
+            android:id="@+id/LoginPage_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:clickable="true"
+            android:gravity="center"
+            android:padding="16dp"
+            android:text="Already have an account?Login"
+            android:textColor="@color/colorDark"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
