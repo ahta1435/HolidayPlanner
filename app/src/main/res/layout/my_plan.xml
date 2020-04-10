@@ -61,7 +61,7 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/duration_of_trip"
+                    android:id="@+id/gender"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
@@ -85,7 +85,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.946"
-                    app:layout_constraintStart_toEndOf="@+id/duration_of_trip"
+                    app:layout_constraintStart_toEndOf="@+id/gender"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
@@ -94,13 +94,23 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <Button
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:padding="16dp"
                 android:text="Cancel"
                 android:id="@+id/btn_del"
                 android:background="@drawable/btn_del"
+                />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="120dp"
+                android:padding="16dp"
+                android:text="Travel"
+                android:id="@+id/btn_book"
+                android:background="@drawable/btn_travel"
                 />
         </LinearLayout>
         </LinearLayout>

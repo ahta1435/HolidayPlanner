@@ -1,19 +1,14 @@
 package com.example.holiday;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,9 +22,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 
 public class TripPlanner extends AppCompatActivity implements MediumPickerDialog.MediumDialog {
     private EditText starting;
@@ -51,7 +43,7 @@ public class TripPlanner extends AppCompatActivity implements MediumPickerDialog
         storageReference = FirebaseStorage.getInstance().getReference().child("Means");
         databaseReference = FirebaseDatabase.getInstance().getReference().child("YourTrip");
         starting = (EditText) findViewById(R.id.starting_of_trip);
-        duration = (EditText) findViewById(R.id.duration_of_trip);
+        duration = (EditText) findViewById(R.id.gender);
         destination = (EditText) findViewById(R.id.destination_of_trip);
         budget = (EditText) findViewById(R.id.budget_of_trip);
         means = (ImageView) findViewById(R.id.medium);

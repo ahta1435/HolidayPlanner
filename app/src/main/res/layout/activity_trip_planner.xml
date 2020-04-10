@@ -30,7 +30,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <EditText
-        android:id="@+id/duration_of_trip"
+        android:id="@+id/gender"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/btn_bg"
@@ -51,6 +51,7 @@
         android:padding="16dp"
         android:text="PLAN"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/medium" />
 
@@ -118,15 +119,15 @@
         android:textColor="@color/colorDark"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/duration_of_trip" />
+        app:layout_constraintTop_toBottomOf="@+id/gender" />
 
     <ImageView
         android:id="@+id/medium"
         android:layout_width="0dp"
         android:layout_height="70dp"
         app:layout_constraintBottom_toTopOf="@+id/plan"
+        app:layout_constraintTop_toBottomOf="@+id/budget_of_trip"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/budget_of_trip"
         app:srcCompat="@drawable/container_image" />
 </androidx.constraintlayout.widget.ConstraintLayout>
