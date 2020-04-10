@@ -5,11 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AccountsActivity">
+
     <TextView
+        android:id="@+id/disp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/disp"
-        />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/logout_btn"
@@ -21,6 +23,17 @@
         app:layout_constraintHorizontal_bias="0.551"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/MyBookings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="myBooking"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.524"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logout_btn" />
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/btm_nav"
         android:layout_width="match_parent"
