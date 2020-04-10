@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,8 +22,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
+import static com.example.holiday.RetrieveTickets.*;
 public class MyBookingsActivity extends AppCompatActivity{
     private RecyclerView recyclerView;
     private DatabaseReference databaseReference;
@@ -86,7 +90,7 @@ public class MyBookingsActivity extends AppCompatActivity{
         private TextView passenger;
         private TextView re;
         private TextView gen;
-        private Object String;
+
 
         public BookingHolder(@NonNull View itemView) {
             super(itemView);
@@ -95,25 +99,9 @@ public class MyBookingsActivity extends AppCompatActivity{
             gen=(TextView)itemView.findViewById(R.id.gender);
         }
         void setPassengers(RetrieveTickets retrieveTickets) {
-            int size = retrieveTickets.getCount();
-            String[] passengers = new String[size];
 
-            //for(int i=0;i<size;i++){
-            passengers[0] = pass.get(0);
-            passenger.setText(passengers[0] + ",");
-            //}
-            String[] age = new String[size];
-            List<String> ages = retrieveTickets.getAge();
-            //for(int i=0;i<size;i++){
-            age[0] = ages.get(0);
-            re.setText(age[0] + ",");
-            //}
-            String[] gender = new String[size];
-            List<String> genders = retrieveTickets.getGender();
-            //for(int i=0;i<size;i++){
-            gender[0] = genders.get(0);
-            gen.setText(gender[0] + ",");
-           //}
+
+
         }
     }
 }

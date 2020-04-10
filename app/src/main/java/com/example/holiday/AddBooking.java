@@ -1,42 +1,45 @@
 package com.example.holiday;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AddBooking {
-    String PlaneId;
-    List<String> gender;
-    List<String> Passengers;
-    List<String> age;
-    int count;
-    public AddBooking() {
 
+    List<Map<String,Object>>  Passenger;
+    String PlaneId;
+    int count;
+   public AddBooking(){
+
+   }
+
+    public AddBooking(List<Map<String, Object>> passenger, String planeId, int count) {
+        Passenger = passenger;
+        PlaneId = planeId;
+        this.count = count;
     }
 
-    public int getCount() {
-        return count;
+    public List<Map<String, Object>> getPassenger() {
+        return Passenger;
+    }
+
+    public void setPassenger(List<Map<String, Object>> passenger) {
+        Passenger = passenger;
     }
 
     public String getPlaneId() {
         return PlaneId;
     }
 
-    public List<String> getPassengers() {
-        return Passengers;
-    }
-
-    public List<String> getAge() {
-        return age;
-    }
-
-    public List<String> getGender() {
-        return gender;
-    }
-
-    public AddBooking(String planeId, List<String> gender, List<String> passengers, List<String> age, int count) {
+    public void setPlaneId(String planeId) {
         PlaneId = planeId;
-        this.gender = gender;
-        Passengers = passengers;
-        this.age = age;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
         this.count = count;
     }
 }
