@@ -1,5 +1,6 @@
 package com.example.holiday;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -27,7 +28,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
+
 public class UserDetails extends AppCompatActivity {
   public int i=1;
     LinearLayout linearLayout;
@@ -82,28 +90,27 @@ public class UserDetails extends AppCompatActivity {
         });
     }
     private void Book(String UserId,String PlaneId,String tripId) {
-        String[] strings = new String[(editTexts.size())];
+        String[]  names= new String[(editTexts.size())];
         List<String> passenger=new ArrayList<>();
-        for(i=0;i<editTexts.size();i++){
-            strings[i]=editTexts.get(i).getText().toString();
-            passenger.add(strings[i]);
-        }
-       String[]  gender=new String[(radioButtons.size())];
+        String[]  gender=new String[(radioButtons.size())];
         List<String>   genders=new ArrayList<>();
-        for(i=0;i<radioButtons.size();i++){
-            gender[i]=radioButtons.get(i).getText().toString();
-            genders.add(gender[i]);
-        }
         String[] ages=new String[(editTextsAge.size())];
         List<String> age=new ArrayList<>();
-        for(i=0;i<editTextsAge.size();i++){
-            ages[i]=editTextsAge.get(i).getText().toString();
-            age.add(ages[i]);
-        }
+        List<Map<String,Object>> Details= new ArrayList<Map<String,Object>>();
+        Map<String, Object> map= new HashMap<String,Object>();
         int count=editTexts.size();
-        if(!passenger.isEmpty()&&!genders.isEmpty()&&!age.isEmpty()) {
+        for(i=0;i<editTexts.size();i++){
+            names[i]=editTexts.get(i).getText().toString();
+            map.put("name", names[i]);
+            gender[i]=radioButtons.get(i).getText().toString();
+            map.put("gender",gender[i]);
+            ages[i]=editTextsAge.get(i).getText().toString();
+            map.put("age",ages[i]);
+            Details.add(map);
+        }
+        if(!Details.isEmpty()) {
             String BookingId = databaseReference.push().getKey();
-            AddBooking addBooking = new AddBooking(PlaneId, genders, passenger, age,count);
+            AddBooking addBooking = new AddBooking(Details,PlaneId,count);
             databaseReference.child(UserId).child(tripId).setValue(addBooking).
                     addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
