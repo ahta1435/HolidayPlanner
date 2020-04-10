@@ -24,6 +24,7 @@ import com.google.firebase.database.Query;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.example.holiday.RetrieveTickets.*;
@@ -88,20 +89,20 @@ public class MyBookingsActivity extends AppCompatActivity{
 
     public static class BookingHolder extends RecyclerView.ViewHolder{
         private TextView passenger;
-        private TextView re;
-        private TextView gen;
-
-
         public BookingHolder(@NonNull View itemView) {
             super(itemView);
             passenger=(TextView)itemView.findViewById(R.id.passenger);
-            re=(TextView)itemView.findViewById(R.id.age);
-            gen=(TextView)itemView.findViewById(R.id.gender);
         }
         void setPassengers(RetrieveTickets retrieveTickets) {
-
-
-
+            int size=retrieveTickets.getCount();
+            String[] names=new String[size];
+            String[] ages=new String[size];
+            String[] genders=new String[size];
+            List<Map<String,Object>> passengers=retrieveTickets.getPassenger();
+            for(int i=0;i<size;i++){
+                   names[i]=passengers.get(i).toString();
+                   passenger.setText(names[i]);
+            }
         }
     }
 }
