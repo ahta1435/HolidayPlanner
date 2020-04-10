@@ -46,7 +46,8 @@ public class MyBookingsActivity extends AppCompatActivity{
         FirebaseUser user = mAuth.getCurrentUser();
         String userId = user.getUid();
         databaseReference = FirebaseDatabase.getInstance().getReference();
-        Query query = databaseReference.child("BooKings").child(userId).child(tripId);
+        Query query = databaseReference.child("BooKings").child(userId).child(tripId).child("passenger");
+
         FirebaseRecyclerOptions<RetrieveTickets> firebaseRecyclerOptions = new FirebaseRecyclerOptions.Builder<RetrieveTickets>()
                 .setQuery(query, RetrieveTickets.class)
                 .build();
@@ -99,6 +100,9 @@ public class MyBookingsActivity extends AppCompatActivity{
             gen=(TextView)itemView.findViewById(R.id.gender);
         }
         void setPassengers(RetrieveTickets retrieveTickets) {
+            passenger.setText(retrieveTickets.getName());
+            re.setText(retrieveTickets.getAge());
+            gen.setText(retrieveTickets.getGender());
 
 
 
