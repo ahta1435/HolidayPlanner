@@ -24,7 +24,6 @@ import com.google.firebase.database.Query;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 import static com.example.holiday.RetrieveTickets.*;
@@ -47,7 +46,8 @@ public class MyBookingsActivity extends AppCompatActivity{
         FirebaseUser user = mAuth.getCurrentUser();
         String userId = user.getUid();
         databaseReference = FirebaseDatabase.getInstance().getReference();
-        Query query = databaseReference.child("BooKings").child(userId).child(tripId);
+        Query query = databaseReference.child("BooKings").child(userId).child(tripId).child("passenger");
+
         FirebaseRecyclerOptions<RetrieveTickets> firebaseRecyclerOptions = new FirebaseRecyclerOptions.Builder<RetrieveTickets>()
                 .setQuery(query, RetrieveTickets.class)
                 .build();
@@ -89,20 +89,23 @@ public class MyBookingsActivity extends AppCompatActivity{
 
     public static class BookingHolder extends RecyclerView.ViewHolder{
         private TextView passenger;
+        private TextView re;
+        private TextView gen;
+
+
         public BookingHolder(@NonNull View itemView) {
             super(itemView);
             passenger=(TextView)itemView.findViewById(R.id.passenger);
+            re=(TextView)itemView.findViewById(R.id.age);
+            gen=(TextView)itemView.findViewById(R.id.gender);
         }
         void setPassengers(RetrieveTickets retrieveTickets) {
-            int size=retrieveTickets.getCount();
-            String[] names=new String[size];
-            String[] ages=new String[size];
-            String[] genders=new String[size];
-            List<Map<String,Object>> passengers=retrieveTickets.getPassenger();
-            for(int i=0;i<size;i++){
-                   names[i]=passengers.get(i).toString();
-                   passenger.setText(names[i]);
-            }
+            passenger.setText(retrieveTickets.getName());
+            re.setText(retrieveTickets.getAge());
+            gen.setText(retrieveTickets.getGender());
+
+
+
         }
     }
 }
