@@ -32,11 +32,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PlansActivity extends AppCompatActivity{
    private RecyclerView planList;
    private DatabaseReference databaseReference;
    private FirebaseAuth mAuth;
    private FirebaseRecyclerAdapter<MyPlans,PlansViewHolder> firebaseRecyclerAdapter;
+   public static List<String> TripId=new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,6 +125,7 @@ public class PlansActivity extends AppCompatActivity{
                                                     if(!dataSnapshot.exists()){
                                                         //splitting the string to get only the specified trip.
                                                         Intent intent=new Intent(PlansActivity.this,BookingActivity.class);
+                                                        TripId.add(id[5]);
                                                         intent.putExtra("TripId", id[5]);
                                                         startActivity(intent);
                                                     }else{

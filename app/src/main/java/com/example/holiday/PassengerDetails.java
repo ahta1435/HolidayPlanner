@@ -1,6 +1,5 @@
 package com.example.holiday;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -28,15 +27,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 
-public class UserDetails extends AppCompatActivity {
+public class PassengerDetails extends AppCompatActivity {
   public int i=1;
     LinearLayout linearLayout;
     private Button btn,book;
@@ -76,13 +71,13 @@ public class UserDetails extends AppCompatActivity {
                          Book(UserId,PlaneId,tripId);
                      }
                      else{
-                       Toast.makeText(UserDetails.this,"already booked",Toast.LENGTH_LONG).show();
+                       Toast.makeText(PassengerDetails.this,"already booked",Toast.LENGTH_LONG).show();
                      }
                  }
                  @Override
                  public void onCancelled(@NonNull DatabaseError databaseError) {
                       String error=databaseError.toString();
-                     Toast.makeText(UserDetails.this,"Error:"+error,Toast.LENGTH_LONG).show();
+                     Toast.makeText(PassengerDetails.this,"Error:"+error,Toast.LENGTH_LONG).show();
                  }
              });
 
@@ -91,13 +86,10 @@ public class UserDetails extends AppCompatActivity {
     }
     private void Book(String UserId,String PlaneId,String tripId) {
         String[]  names= new String[(editTexts.size())];
-        List<String> passenger=new ArrayList<>();
         String[]  gender=new String[(radioButtons.size())];
-        List<String>   genders=new ArrayList<>();
         String[] ages=new String[(editTextsAge.size())];
-        List<String> age=new ArrayList<>();
-        List<Map<String,Object>> Details= new ArrayList<Map<String,Object>>();
-        Map<String, Object> map= new HashMap<String,Object>();
+        List<Map<String,Object>> Details=new ArrayList<>();
+        Map<String, Object> map=new HashMap<>();
         int count=editTexts.size();
         for(i=0;i<editTexts.size();i++){
             names[i]=editTexts.get(i).getText().toString();
@@ -107,26 +99,24 @@ public class UserDetails extends AppCompatActivity {
             ages[i]=editTextsAge.get(i).getText().toString();
             map.put("age",ages[i]);
             Details.add(map);
+            map=new HashMap<>();
         }
         if(!Details.isEmpty()) {
             String BookingId = databaseReference.push().getKey();
-            AddBooking addBooking = new AddBooking(Details,PlaneId,count);
+            AddBooking addBooking = new AddBooking(BookingId,Details,PlaneId,count);
             databaseReference.child(UserId).child(tripId).setValue(addBooking).
                     addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                Intent intent=new Intent(UserDetails.this,MyBookingsActivity.class);
-                                intent.putExtra("TripId",tripId);
-                                intent.putExtra("BookingId",BookingId);
-                                startActivity(intent);
+                                Toast.makeText(PassengerDetails.this, "BOOKING DONE SUCCESSFULLY", Toast.LENGTH_LONG).show();
                             } else {
-                                Toast.makeText(UserDetails.this, "Error In Loading", Toast.LENGTH_LONG).show();
+                                Toast.makeText(PassengerDetails.this, "Error In Loading", Toast.LENGTH_LONG).show();
                             }
                         }
                     });
         }else{
-            Toast.makeText(UserDetails.this, "Input Field Cannot Be empty", Toast.LENGTH_LONG).show();
+            Toast.makeText(PassengerDetails.this, "Input Field Cannot Be empty", Toast.LENGTH_LONG).show();
         }
     }
     private void Passenger() {

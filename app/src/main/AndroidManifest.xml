@@ -13,8 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MyBookingsActivity"></activity>
-        <activity android:name=".UserDetails" />
+        <activity android:name=".AllBookingActivity"></activity>
+        <activity android:name=".MyBookingsActivity" />
+        <activity android:name=".PassengerDetails" />
         <activity android:name=".PlaneRequestActivity" />
         <activity android:name=".SearchActivity" />
         <activity android:name=".TrainActivity" />
