@@ -44,8 +44,8 @@ public class PlaneRequestActivity extends AppCompatActivity {
         plane.setHasFixedSize(true);
         plane.setLayoutManager(new LinearLayoutManager(this));
         firebaseFirestore=FirebaseFirestore.getInstance();
-       CollectionReference collectionReference=firebaseFirestore.collection("Planes");
-       Query query=collectionReference.whereEqualTo("starting",startAirport).whereEqualTo("destination",destinationAirport);
+      CollectionReference collectionReference= firebaseFirestore.collection("Planes");
+       Query query=collectionReference.whereEqualTo("starting",startAirport).whereEqualTo("destination",destinationAirport);;
                 FirestoreRecyclerOptions<Planes> response = new FirestoreRecyclerOptions.Builder<Planes>()
                         .setQuery(query, Planes.class)
                         .build();
