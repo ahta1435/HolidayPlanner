@@ -1,54 +1,107 @@
 package com.example.holiday;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AddBooking {
-    List<Map<String,Object>>  Passenger;
-    String PlaneId;
-    String BookingId;
-    int count;
-   public AddBooking(){
+public class AddBooking  {
+    private String Name;
+    private String bookingId;
+    private String Age;
+    private String planeId;
+    private int Count;
+    private String Gender;
+    private String starting;
+    private String destination;
+    private String image;
 
-   }
+    public AddBooking(){
 
-    public AddBooking(String bookingId,List<Map<String, Object>> passenger, String planeId, int count) {
-        Passenger = passenger;
-        PlaneId = planeId;
-        BookingId = bookingId;
-        this.count = count;
     }
 
-    public String getBookingId() {
-        return BookingId;
+    public AddBooking(String name, String bookingId, String age, String planeId, String gender,int count,String starting,String destination,
+                                String image) {
+        Name = name;
+        this.bookingId = bookingId;
+        Age = age;
+        this.planeId = planeId;
+        Gender = gender;
+        this.Count=count;
+        this.starting=starting;
+        this.destination=destination;
+        this.image=image;
     }
 
-    public void setBookingId(String bookingId) {
-        BookingId = bookingId;
+    public String getImage() {
+        return image;
     }
 
-    public List<Map<String, Object>> getPassenger() {
-        return Passenger;
+    public void setImage(String image) {
+        this.image = image;
     }
 
-    public void setPassenger(List<Map<String, Object>> passenger) {
-        Passenger = passenger;
+    public String getStarting() {
+        return starting;
     }
 
-    public String getPlaneId() {
-        return PlaneId;
+    public void setStarting(String starting) {
+        this.starting = starting;
     }
 
-    public void setPlaneId(String planeId) {
-        PlaneId = planeId;
+    public String getDestination() {
+        return destination;
+    }
+
+    public void setDestination(String destination) {
+        this.destination = destination;
     }
 
     public int getCount() {
-        return count;
+        return Count;
     }
 
     public void setCount(int count) {
-        this.count = count;
+        Count = count;
+    }
+
+    public String getName() {
+        return Name;
+    }
+
+    public void setName(String name) {
+        Name = name;
+    }
+
+    public String getBookingId() {
+        return bookingId;
+    }
+
+    public void setBookingId(String bookingId) {
+        this.bookingId = bookingId;
+    }
+
+    public String getAge() {
+        return Age;
+    }
+
+    public void setAge(String age) {
+        Age = age;
+    }
+
+    public String getPlaneId() {
+        return planeId;
+    }
+
+    public void setPlaneId(String planeId) {
+        this.planeId = planeId;
+    }
+
+    public String getGender() {
+        return Gender;
+    }
+
+    public void setGender(String gender) {
+        Gender = gender;
     }
 }

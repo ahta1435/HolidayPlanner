@@ -15,16 +15,25 @@ public class SearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+        final int val=getIntent().getIntExtra("bus",0);
         Airport=(EditText)findViewById(R.id.airport_name);
         btn=(Button)findViewById(R.id.ret);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SearchActivity.this,FlightActivity.class);
-                String stringToPassBack = Airport.getText().toString();
-                intent.putExtra("keyName", stringToPassBack);
-                setResult(RESULT_OK, intent);
-                finish();
+                if(val==1){
+                    Intent intent = new Intent(SearchActivity.this,BusActivity.class);
+                    String stringToPassBack = Airport.getText().toString();
+                    intent.putExtra("keyName", stringToPassBack);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }else {
+                    Intent intent = new Intent(SearchActivity.this, FlightActivity.class);
+                    String stringToPassBack = Airport.getText().toString();
+                    intent.putExtra("keyName", stringToPassBack);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
             }
         });
     }

@@ -3,7 +3,6 @@ package com.example.holiday;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -43,10 +42,11 @@ public class FlightActivity extends AppCompatActivity implements DatePickerDialo
         String userId=user.getUid(); //userId
         databaseReference= FirebaseDatabase.getInstance().getReference();
         String TripId=getIntent().getStringExtra("TripId");//trip id
+        final int res= getIntent().getIntExtra("id",0);
         starting=(TextView)findViewById(R.id.starting);
         destination=(TextView)findViewById(R.id.destination);
         journey_from = (TextView) findViewById(R.id.starting_airport);
-        journey_to = (TextView) findViewById(R.id.destination_airport);
+        journey_to = (TextView) findViewById(R.id.destination_bustand);
         Doj=(TextView)findViewById(R.id.date_picker);
         btn_plane_search=(Button)findViewById(R.id.Find_plane);
 
@@ -99,6 +99,7 @@ public class FlightActivity extends AppCompatActivity implements DatePickerDialo
                    Intent intent = new Intent(FlightActivity.this, PlaneRequestActivity.class);
                    intent.putExtra("TripId",TripId);
                    intent.putExtra("startAirport",startAirport);
+                   intent.putExtra("id",res);
                    intent.putExtra("destinationAirport",destinationAirport);
                    intent.putExtra("dateOfJourney",dateOfJourney);
                    startActivity(intent);

@@ -40,7 +40,6 @@ public class PlansActivity extends AppCompatActivity{
    private DatabaseReference databaseReference;
    private FirebaseAuth mAuth;
    private FirebaseRecyclerAdapter<MyPlans,PlansViewHolder> firebaseRecyclerAdapter;
-   public static List<String> TripId=new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,13 +124,11 @@ public class PlansActivity extends AppCompatActivity{
                                                     if(!dataSnapshot.exists()){
                                                         //splitting the string to get only the specified trip.
                                                         Intent intent=new Intent(PlansActivity.this,BookingActivity.class);
-                                                        TripId.add(id[5]);
                                                         intent.putExtra("TripId", id[5]);
                                                         startActivity(intent);
                                                     }else{
-                                                        Intent intent=new Intent(PlansActivity.this,MyBookingsActivity.class);
-                                                        intent.putExtra("TripId", id[5]);
-                                                        startActivity(intent);
+                                                        Toast.makeText(PlansActivity.this,"Already Booked,Go to My Bookings",
+                                                                Toast.LENGTH_LONG).show();
                                                     }
                                                 }
 

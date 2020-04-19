@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.Serializable;
+
 public class BookingActivity extends AppCompatActivity {
    private ImageView plane;
    private ImageView train;
@@ -21,11 +23,15 @@ public class BookingActivity extends AppCompatActivity {
         plane=(ImageView)findViewById(R.id.plane);
         train=(ImageView)findViewById(R.id.train);
         bus=(ImageView)findViewById(R.id.bus);
+        final int pl=1;
+        final int bu=2;
+        final int tr=3;
         plane.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(BookingActivity.this,FlightActivity.class);
                 intent.putExtra("TripId",tripId);
+                intent.putExtra("id",pl);
                 startActivity(intent);
             }
         });
@@ -42,6 +48,7 @@ public class BookingActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent=new Intent(BookingActivity.this,BusActivity.class);
                 intent.putExtra("TripId",tripId);
+                intent.putExtra("id",bu);
                 startActivity(intent);
             }
         });

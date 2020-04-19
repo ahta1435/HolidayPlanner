@@ -57,6 +57,13 @@ public class AccountsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        booking.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(AccountsActivity.this,MyBookingsActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 }

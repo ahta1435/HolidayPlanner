@@ -2,11 +2,16 @@ package com.example.holiday;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
@@ -14,9 +19,11 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -25,6 +32,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,17 +55,32 @@ public class PassengerDetails extends AppCompatActivity {
     List<RadioButton> radioButtons=new ArrayList<RadioButton>();
     List<EditText> editTextsAge=new ArrayList<EditText>();
     private FirebaseAuth mAuth;
+    private Uri imageUri=null;
     private DatabaseReference databaseReference;
+    private FirebaseFirestore firebaseFirestore;
+    private StorageReference storageReference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_details);
         String PlaneId = getIntent().getStringExtra("Document");
+        storageReference = FirebaseStorage.getInstance().getReference().child("Means");
         String tripId = getIntent().getStringExtra("TripId");
+       final int  res=getIntent().getIntExtra("id",0);
+        if(res==1) {
+            Resources resources=getResources();
+            imageUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://"
+                    + resources.getResourcePackageName(R.drawable.aircraft) + '/' +
+                    resources.getResourceTypeName(R.drawable.aircraft) + '/' +
+                    resources.getResourceEntryName(R.drawable.aircraft));
+        }
         mAuth=FirebaseAuth.getInstance();
         FirebaseUser user=mAuth.getCurrentUser();
         String UserId=user.getUid();
+        StorageReference filepath = storageReference.child("Transport").child(imageUri.getLastPathSegment());
         databaseReference= FirebaseDatabase.getInstance().getReference().child("BooKings");
+        firebaseFirestore=FirebaseFirestore.getInstance();
+       DocumentReference doc=firebaseFirestore.collection("Planes").document(PlaneId);
         linearLayout = (LinearLayout) findViewById(R.id.parentLayout);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         btn=(Button)findViewById(R.id.add_passenger);
@@ -68,7 +99,25 @@ public class PassengerDetails extends AppCompatActivity {
                  @Override
                  public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                      if(!dataSnapshot.exists()){
-                         Book(UserId,PlaneId,tripId);
+                         filepath.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                             @Override
+                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                 filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                     @Override
+                                     public void onSuccess(Uri uri) {
+                                       String image=String.valueOf(uri);
+                                       doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                           @Override
+                                           public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                                  String starting=documentSnapshot.getString("starting");
+                                                  String destination=documentSnapshot.getString("destination");
+                                                  Book(UserId,PlaneId,tripId,starting,destination,image);
+                                           }
+                                       });
+                                     }
+                                 });
+                             }
+                         });
                      }
                      else{
                        Toast.makeText(PassengerDetails.this,"already booked",Toast.LENGTH_LONG).show();
@@ -84,26 +133,42 @@ public class PassengerDetails extends AppCompatActivity {
           }
         });
     }
-    private void Book(String UserId,String PlaneId,String tripId) {
+    private void Book(String UserId,String PlaneId,String tripId,String starting,String destination,String image) {
         String[]  names= new String[(editTexts.size())];
-        String[]  gender=new String[(radioButtons.size())];
+        String[]  genders=new String[(radioButtons.size())];
         String[] ages=new String[(editTextsAge.size())];
-        List<Map<String,Object>> Details=new ArrayList<>();
-        Map<String, Object> map=new HashMap<>();
+        StringBuilder name = new StringBuilder();
+        StringBuilder age = new StringBuilder();
+        StringBuilder gender = new StringBuilder();
+        List<String> list1=new ArrayList<>();
+        List<String> list2=new ArrayList<>();
+        List<String> list3=new ArrayList<>();
         int count=editTexts.size();
         for(i=0;i<editTexts.size();i++){
             names[i]=editTexts.get(i).getText().toString();
-            map.put("name", names[i]);
-            gender[i]=radioButtons.get(i).getText().toString();
-            map.put("gender",gender[i]);
+            list1.add(names[i]);
+            genders[i]=radioButtons.get(i).getText().toString();
+            list2.add(genders[i]);
             ages[i]=editTextsAge.get(i).getText().toString();
-            map.put("age",ages[i]);
-            Details.add(map);
-            map=new HashMap<>();
+           list3.add(ages[i]);
         }
-        if(!Details.isEmpty()) {
+        for(String st:list1) {
+            name.append(st).append(",");
+        }
+        for(String g:list2) {
+            gender.append(g).append(",");
+        }
+        for(String a:list3) {
+            age.append(a).append(",");
+        }
+        String passengerNames=name.toString();
+        String passengerAges=age.toString();
+        String passengerGender=gender.toString();
+       // String start=starting;
+        //String dest=destination.toString();
+        if(!TextUtils.isEmpty(passengerNames)&&!TextUtils.isEmpty(passengerAges)&&!TextUtils.isEmpty(passengerGender)) {
             String BookingId = databaseReference.push().getKey();
-            AddBooking addBooking = new AddBooking(BookingId,Details,PlaneId,count);
+            AddBooking addBooking = new AddBooking(passengerNames,BookingId,passengerAges,PlaneId,passengerGender,count,starting,destination,image);
             databaseReference.child(UserId).child(tripId).setValue(addBooking).
                     addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
@@ -111,7 +176,8 @@ public class PassengerDetails extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 Toast.makeText(PassengerDetails.this, "BOOKING DONE SUCCESSFULLY", Toast.LENGTH_LONG).show();
                             } else {
-                                Toast.makeText(PassengerDetails.this, "Error In Loading", Toast.LENGTH_LONG).show();
+                                   String error=task.getException().getMessage();
+                                Toast.makeText(PassengerDetails.this, "Error:"+error, Toast.LENGTH_LONG).show();
                             }
                         }
                     });
