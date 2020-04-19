@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,8 +41,8 @@ public class BusRequestActivity extends AppCompatActivity {
         rView.setHasFixedSize(true);
         firebaseFirestore=FirebaseFirestore.getInstance();
         CollectionReference collectionReference=firebaseFirestore.collection("Buses");
-        Query query=collectionReference.whereEqualTo("starting_stand",startPoint)
-                     .whereEqualTo("destination_stand",destinationPoint);
+        Query query=collectionReference.whereEqualTo("starting",startPoint)
+                     .whereEqualTo("destination",destinationPoint);
         FirestoreRecyclerOptions<Buses> response=new FirestoreRecyclerOptions.Builder<Buses>()
                 .setQuery(query,Buses.class)
                 .build();
@@ -96,7 +97,7 @@ public class BusRequestActivity extends AppCompatActivity {
             String destination_stand=buses.getDestination();
             to.setText(destination_stand);
             int pr=buses.getPrice();
-            price.setText(pr);
+            price.setText("$"+pr);
         }
     }
 }
