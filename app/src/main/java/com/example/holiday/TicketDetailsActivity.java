@@ -35,25 +35,50 @@ public class TicketDetailsActivity extends AppCompatActivity {
                             if(dataSnapshot.exists()){
                                 Passengers passengers=dataSnapshot.getValue(Passengers.class);
                                 StringBuilder passengerStrBuilder = new StringBuilder();
-                   int size=passengers.getCount();
-                      String n=passengers.getName();
-                       String[] name=n.split(",");
-                       String a=passengers.getAge();
-                     String[]   age=a.split(",");
-                      String g=passengers.getGender();
-                     String[]  gender=g.split(",");
-                     String bId=passengers.getBookingId();
-                     String starting=passengers.getStarting();
-                     String destination=passengers.getDestination();
-                    passengerStrBuilder.append("FROM: "+starting+"      "+"TO: "+destination);
-                      passengerStrBuilder.append("\n");
-                   passengerStrBuilder.append("TicketId:   "+bId);
-                     for(int i=0;i<size;i++){
-                       passengerStrBuilder.append("\n");
-                       passengerStrBuilder.append("Passenger Name"+(i+1)+": "+name[i]+"\n"+"Passenger age: "+age[i]+"\n"
-                                                     +"gender:  "+gender[i]);
-                    passengerStrBuilder.append("\n");
-                               }
+                                int res=passengers.getRes();
+                                if(res==2){
+                                    String s=passengers.getSeats();
+                                    String[] seat=s.split(",");
+                                    int size=passengers.getCount();
+                                    String n=passengers.getName();
+                                    String[] name=n.split(",");
+                                    String a=passengers.getAge();
+                                    String[]   age=a.split(",");
+                                    String g=passengers.getGender();
+                                    String[]  gender=g.split(",");
+                                    String bId=passengers.getBookingId();
+                                    String starting=passengers.getStarting();
+                                    String destination=passengers.getDestination();
+                                    passengerStrBuilder.append("FROM: "+starting+"      "+"TO: "+destination);
+                                    passengerStrBuilder.append("\n");
+                                    passengerStrBuilder.append("TicketId:   "+bId);
+                                    for(int i=0;i<size;i++){
+                                        passengerStrBuilder.append("\n");
+                                        passengerStrBuilder.append("Passenger Name"+(i+1)+": "+name[i]+"\n"+"Passenger age: "+age[i]+"\n"
+                                                +"gender:  "+gender[i]+"\n"+"seat No:"+seat[i]);
+                                        passengerStrBuilder.append("\n");
+                                    }
+                                }else {
+                                    int size = passengers.getCount();
+                                    String n = passengers.getName();
+                                    String[] name = n.split(",");
+                                    String a = passengers.getAge();
+                                    String[] age = a.split(",");
+                                    String g = passengers.getGender();
+                                    String[] gender = g.split(",");
+                                    String bId = passengers.getBookingId();
+                                    String starting = passengers.getStarting();
+                                    String destination = passengers.getDestination();
+                                    passengerStrBuilder.append("FROM: " + starting + "      " + "TO: " + destination);
+                                    passengerStrBuilder.append("\n");
+                                    passengerStrBuilder.append("TicketId:   " + bId);
+                                    for (int i = 0; i < size; i++) {
+                                        passengerStrBuilder.append("\n");
+                                        passengerStrBuilder.append("Passenger Name" + (i + 1) + ": " + name[i] + "\n" + "Passenger age: " + age[i] + "\n"
+                                                + "gender:  " + gender[i]);
+                                        passengerStrBuilder.append("\n");
+                                    }
+                                }
                             tickets.setText(passengerStrBuilder);
                             }
                     }

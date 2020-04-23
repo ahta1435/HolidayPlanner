@@ -15,13 +15,13 @@ public class AddBooking  {
     private String starting;
     private String destination;
     private String image;
-
+    private int res;
     public AddBooking(){
 
     }
 
     public AddBooking(String name, String bookingId, String age, String planeId, String gender,int count,String starting,String destination,
-                                String image) {
+                                String image,int res) {
         Name = name;
         this.bookingId = bookingId;
         Age = age;
@@ -31,6 +31,15 @@ public class AddBooking  {
         this.starting=starting;
         this.destination=destination;
         this.image=image;
+        this.res=res;
+    }
+
+    public int getRes() {
+        return res;
+    }
+
+    public void setRes(int res) {
+        this.res = res;
     }
 
     public String getImage() {

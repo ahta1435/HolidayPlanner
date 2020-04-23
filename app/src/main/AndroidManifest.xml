@@ -13,7 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".BusRequestActivity"></activity>
+        <activity android:name=".PassengerDetailsForBusActivity"></activity>
+        <activity android:name=".SeatSelectorActivity" />
+        <activity android:name=".BusRequestActivity" />
         <activity android:name=".TicketDetailsActivity" />
         <activity android:name=".AllBookingActivity" />
         <activity android:name=".MyBookingsActivity" />

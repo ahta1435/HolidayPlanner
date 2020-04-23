@@ -84,7 +84,7 @@ public class PassengerDetails extends AppCompatActivity {
         linearLayout = (LinearLayout) findViewById(R.id.parentLayout);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         btn=(Button)findViewById(R.id.add_passenger);
-        book=(Button)findViewById(R.id.booking);
+        book=(Button)findViewById(R.id.booktkt);
             Passenger();
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,7 +111,7 @@ public class PassengerDetails extends AppCompatActivity {
                                            public void onSuccess(DocumentSnapshot documentSnapshot) {
                                                   String starting=documentSnapshot.getString("starting");
                                                   String destination=documentSnapshot.getString("destination");
-                                                  Book(UserId,PlaneId,tripId,starting,destination,image);
+                                                  Book(UserId,PlaneId,tripId,starting,destination,image,res);
                                            }
                                        });
                                      }
@@ -133,7 +133,7 @@ public class PassengerDetails extends AppCompatActivity {
           }
         });
     }
-    private void Book(String UserId,String PlaneId,String tripId,String starting,String destination,String image) {
+    private void Book(String UserId,String PlaneId,String tripId,String starting,String destination,String image,int res) {
         String[]  names= new String[(editTexts.size())];
         String[]  genders=new String[(radioButtons.size())];
         String[] ages=new String[(editTextsAge.size())];
@@ -168,7 +168,8 @@ public class PassengerDetails extends AppCompatActivity {
         //String dest=destination.toString();
         if(!TextUtils.isEmpty(passengerNames)&&!TextUtils.isEmpty(passengerAges)&&!TextUtils.isEmpty(passengerGender)) {
             String BookingId = databaseReference.push().getKey();
-            AddBooking addBooking = new AddBooking(passengerNames,BookingId,passengerAges,PlaneId,passengerGender,count,starting,destination,image);
+            AddBooking addBooking = new AddBooking(passengerNames,BookingId,passengerAges,PlaneId,passengerGender,count
+                    ,starting,destination,image,res);
             databaseReference.child(UserId).child(tripId).setValue(addBooking).
                     addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override

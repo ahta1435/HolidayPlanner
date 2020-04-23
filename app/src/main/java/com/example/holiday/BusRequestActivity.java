@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -50,6 +51,20 @@ public class BusRequestActivity extends AppCompatActivity {
             @Override
             protected void onBindViewHolder(@NonNull BusHolder holder, int position, @NonNull Buses model) {
                         holder.setBuses(model);
+                        holder.itemView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                              DocumentSnapshot snapshot=getSnapshots().getSnapshot(holder.getAdapterPosition());
+                              final String DocId=snapshot.getId();
+                              Intent intent=new Intent(BusRequestActivity.this,SeatSelectorActivity.class);
+                                intent.putExtra("startBusPoint",startPoint);
+                                intent.putExtra("destinationBusPoint",destinationPoint);
+                                intent.putExtra("TripId",TripId);
+                                intent.putExtra("DocId",DocId);
+                                intent.putExtra("id",res);
+                                startActivity(intent);
+                            }
+                        });
             }
             @NonNull
             @Override
