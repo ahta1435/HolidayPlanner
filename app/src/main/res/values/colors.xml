@@ -9,4 +9,5 @@
     <color name="white">#ffffff</color>
     <color name="red">#C4E60000</color>
     <color name="paleGray">#B8ADAD</color>
+    <color name="AlreadyBookedSeat">#9C9797</color>
 </resources>

@@ -50,6 +50,7 @@ public class PassengerDetailsForBusActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private Uri imageUri=null;
     private DatabaseReference databaseReference;
+    private DatabaseReference databaseReference1;
     private FirebaseFirestore firebaseFirestore;
     private StorageReference storageReference;
     private ArrayList<String> items;
@@ -80,6 +81,7 @@ public class PassengerDetailsForBusActivity extends AppCompatActivity {
         String UserId=user.getUid();
         StorageReference filepath = storageReference.child("Transport").child(imageUri.getLastPathSegment());
         databaseReference= FirebaseDatabase.getInstance().getReference().child("BooKings");
+        databaseReference1=FirebaseDatabase.getInstance().getReference().child("BookedSeats");
         firebaseFirestore=FirebaseFirestore.getInstance();
         DocumentReference doc=firebaseFirestore.collection("Buses").document(DocId);
         linearLayout = (LinearLayout) findViewById(R.id.parentLayout);
@@ -165,7 +167,11 @@ public class PassengerDetailsForBusActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
+                                String id=databaseReference1.push().getKey();
+                                BookedSeats bookedSeats=new BookedSeats(items);
+                                databaseReference1.child(DocId).child(id).setValue(bookedSeats);
                                 Toast.makeText(PassengerDetailsForBusActivity.this, "BOOKING DONE SUCCESSFULLY", Toast.LENGTH_LONG).show();
+                                finish();
                             } else {
                                 String error=task.getException().getMessage();
                                 Toast.makeText(PassengerDetailsForBusActivity.this, "Error:"+error, Toast.LENGTH_LONG).show();
