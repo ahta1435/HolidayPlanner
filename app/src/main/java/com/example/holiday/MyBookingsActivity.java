@@ -86,10 +86,9 @@ public class MyBookingsActivity extends AppCompatActivity{
                                  public void onClick(View v) {
                                      databaseReference.child("BooKings").child(userId)
                                              .child(getRef(position).getKey())
-                                             .addListenerForSingleValueEvent(new ValueEventListener() {
+                                             .addValueEventListener(new ValueEventListener() {
                                                  @Override
                                                  public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
                                                      if(dataSnapshot.exists()) {
                                                          Passengers addBusBooking = dataSnapshot.getValue(Passengers.class);
                                                          BusId = addBusBooking.getBusId();
@@ -99,6 +98,7 @@ public class MyBookingsActivity extends AppCompatActivity{
                                                                  .child(BusId).child(SeatId).removeValue();
                                                      }
                                                  }
+
                                                  @Override
                                                  public void onCancelled(@NonNull DatabaseError databaseError) {
 
