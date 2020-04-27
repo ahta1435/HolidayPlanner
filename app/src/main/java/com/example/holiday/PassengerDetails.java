@@ -84,7 +84,7 @@ public class PassengerDetails extends AppCompatActivity {
         linearLayout = (LinearLayout) findViewById(R.id.parentLayout);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         btn=(Button)findViewById(R.id.add_passenger);
-        book=(Button)findViewById(R.id.booktkt);
+        book=(Button)findViewById(R.id.book_plane_ticket);
             Passenger();
         btn.setOnClickListener(new View.OnClickListener() {
             @Override

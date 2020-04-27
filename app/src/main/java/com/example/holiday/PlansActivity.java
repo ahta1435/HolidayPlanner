@@ -119,7 +119,7 @@ public class PlansActivity extends AppCompatActivity{
                                                         .child(getRef(position).getKey()).toString();
                                             String[] id=list.split("/");
                                                 FirebaseDatabase.getInstance().getReference().child("BooKings").child(userid)
-                                                        .child(id[5]).addValueEventListener(new ValueEventListener() {
+                                                        .child(id[5]).addListenerForSingleValueEvent(new ValueEventListener() {
                                                     @Override
                                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                                         if (!dataSnapshot.exists()) {
@@ -140,8 +140,6 @@ public class PlansActivity extends AppCompatActivity{
                                                     }
                                                 });
                                             }
-
-
                                     });
                                       holder.setMyPlans(model);
             }

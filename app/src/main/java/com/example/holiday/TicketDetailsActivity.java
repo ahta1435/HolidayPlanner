@@ -29,6 +29,7 @@ public class TicketDetailsActivity extends AppCompatActivity {
      private String BusId;
      private String SeatId;
      private int res;
+      int i=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,48 +42,11 @@ public class TicketDetailsActivity extends AppCompatActivity {
         FirebaseUser user=mAuth.getCurrentUser();
         String  UserId=user.getUid();
         btn_cancel_ticket=(Button)findViewById(R.id.cancel_ticket);
-        databaseReference.child("BooKings").child(UserId).child(Id)
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.exists()) {
-                            Passengers addBusBooking = dataSnapshot.getValue(Passengers.class);
-                            BusId = addBusBooking.getBusId();
-                            SeatId = addBusBooking.getSeatId();
-                            res = addBusBooking.getRes();
-                        }
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-        DisplayTicket(UserId,Id);
-    btn_cancel_ticket.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if(res==2) {
-                databaseReference = FirebaseDatabase.getInstance().getReference()
-                        .child("BookedSeats").child(BusId).child(SeatId);
-                databaseReference.removeValue();
-            }
-            databaseReference=FirebaseDatabase.getInstance().getReference()
-                             .child("BooKings").child(UserId).child(Id);
-            databaseReference.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if(task.isSuccessful()){
-                        Toast.makeText(TicketDetailsActivity.this,
-                                "Successfully cancelled",Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-        }
-    });
+        DisplayTicket(UserId, Id);
     }
     private void DisplayTicket(String userId, String id) {
         databaseReference.child("BooKings").child(userId).child(id)
-                .addValueEventListener(new ValueEventListener() {
+                .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if(dataSnapshot.exists()){
@@ -133,11 +97,15 @@ public class TicketDetailsActivity extends AppCompatActivity {
                                 }
                             }
                             tickets.setText(passengerStrBuilder);
+                        }else{
+                            Toast.makeText(TicketDetailsActivity.this,
+                                    "ticket has been deleted",Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
+
                     }
                 });
     }

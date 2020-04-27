@@ -47,6 +47,7 @@ public class MyBookingsActivity extends AppCompatActivity{
     private FirebaseRecyclerAdapter<Passengers,TicketHolder> firebaseRecyclerAdapter;
     private String BusId;
     private String SeatId;
+    private int res;
     private DatabaseReference databaseReference1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +79,38 @@ public class MyBookingsActivity extends AppCompatActivity{
                                      Intent intent=new Intent(MyBookingsActivity.this,TicketDetailsActivity.class);
                                      intent.putExtra("IdOfTrip",id[5]);
                                      startActivity(intent);
+                                 }
+                             });
+                             holder.btn_cancel_ticket.setOnClickListener(new View.OnClickListener() {
+                                 @Override
+                                 public void onClick(View v) {
+                                     databaseReference.child("BooKings").child(userId)
+                                             .child(getRef(position).getKey())
+                                             .addListenerForSingleValueEvent(new ValueEventListener() {
+                                                 @Override
+                                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                                     if(dataSnapshot.exists()) {
+                                                         Passengers addBusBooking = dataSnapshot.getValue(Passengers.class);
+                                                         BusId = addBusBooking.getBusId();
+                                                         SeatId = addBusBooking.getSeatId();
+                                                         res = addBusBooking.getRes();
+                                                     }
+                                                 }
+                                                 @Override
+                                                 public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                                 }
+                                             });
+                                     if (res == 2) {
+                                         databaseReference = FirebaseDatabase.getInstance().getReference()
+                                                 .child("BookedSeats").child(BusId).child(SeatId);
+                                         databaseReference.removeValue();
+                                     }
+                                     databaseReference = FirebaseDatabase.getInstance().getReference()
+                                             .child("BooKings").child(userId).child(getRef(position).getKey());
+                                     databaseReference.removeValue();
+
                                  }
                              });
                               holder.SetPassenger(model);
