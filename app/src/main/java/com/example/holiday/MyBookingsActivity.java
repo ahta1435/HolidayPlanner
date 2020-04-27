@@ -95,6 +95,8 @@ public class MyBookingsActivity extends AppCompatActivity{
                                                          BusId = addBusBooking.getBusId();
                                                          SeatId = addBusBooking.getSeatId();
                                                          res = addBusBooking.getRes();
+                                                         databaseReference1.child("BookedSeats")
+                                                                 .child(BusId).child(SeatId).removeValue();
                                                      }
                                                  }
                                                  @Override
@@ -102,14 +104,8 @@ public class MyBookingsActivity extends AppCompatActivity{
 
                                                  }
                                              });
-                                     if (res == 2) {
-                                         databaseReference = FirebaseDatabase.getInstance().getReference()
-                                                 .child("BookedSeats").child(BusId).child(SeatId);
-                                         databaseReference.removeValue();
-                                     }
-                                     databaseReference = FirebaseDatabase.getInstance().getReference()
-                                             .child("BooKings").child(userId).child(getRef(position).getKey());
-                                     databaseReference.removeValue();
+                                      FirebaseDatabase.getInstance().getReference()
+                                             .child("BooKings").child(userId).child(getRef(position).getKey()).removeValue();
 
                                  }
                              });
@@ -135,7 +131,7 @@ public class MyBookingsActivity extends AppCompatActivity{
     @Override
     protected void onStop() {
         super.onStop();
-        if(firebaseRecyclerAdapter==null){
+        if(firebaseRecyclerAdapter!=null){
             firebaseRecyclerAdapter.stopListening();
         }
     }

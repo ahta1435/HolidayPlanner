@@ -91,7 +91,7 @@ public class PassengerDetailsForBusActivity extends AppCompatActivity {
         book.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                databaseReference.child(UserId).child(TripId).addValueEventListener(new ValueEventListener() {
+                databaseReference.child(UserId).child(TripId).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if(!dataSnapshot.exists()){
@@ -109,6 +109,7 @@ public class PassengerDetailsForBusActivity extends AppCompatActivity {
                             });
                         }
                     }
+
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
                         String error=databaseError.toString();
