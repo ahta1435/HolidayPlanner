@@ -62,6 +62,7 @@ public class BusRequestActivity extends AppCompatActivity {
                                 intent.putExtra("TripId",TripId);
                                 intent.putExtra("DocId",DocId);
                                 intent.putExtra("id",res);
+                                finish();
                                 startActivity(intent);
                             }
                         });

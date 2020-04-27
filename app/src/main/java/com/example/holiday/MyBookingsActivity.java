@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -21,6 +22,8 @@ import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -30,6 +33,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,6 +45,9 @@ public class MyBookingsActivity extends AppCompatActivity{
     private DatabaseReference databaseReference;
     private FirebaseAuth mAuth;
     private FirebaseRecyclerAdapter<Passengers,TicketHolder> firebaseRecyclerAdapter;
+    private String BusId;
+    private String SeatId;
+    private DatabaseReference databaseReference1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,9 +56,8 @@ public class MyBookingsActivity extends AppCompatActivity{
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
         String userId = user.getUid();
+        databaseReference1= FirebaseDatabase.getInstance().getReference();
         databaseReference = FirebaseDatabase.getInstance().getReference();
-       // int size=PassengerDetails.trip.size();
-        //String[] tripId1=new String[size];
         recyclerView=(RecyclerView)findViewById(R.id.tickets);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -96,18 +102,20 @@ public class MyBookingsActivity extends AppCompatActivity{
     @Override
     protected void onStop() {
         super.onStop();
-        if(firebaseRecyclerAdapter!=null){
+        if(firebaseRecyclerAdapter==null){
             firebaseRecyclerAdapter.stopListening();
         }
     }
     public static class TicketHolder extends RecyclerView.ViewHolder{
               private TextView s,t;
               private ImageView i;
+              private Button btn_cancel_ticket;
             public TicketHolder(@NonNull View itemView) {
                 super(itemView);
                 s=(TextView)itemView.findViewById(R.id.journey_from_airport);
                 t=(TextView)itemView.findViewById(R.id.journey_to);
                 i=(ImageView) itemView.findViewById(R.id.means);
+                btn_cancel_ticket=(Button)itemView.findViewById(R.id.cancel_ticket);
 
             }
            public void SetPassenger(Passengers passengers){
@@ -118,6 +126,7 @@ public class MyBookingsActivity extends AppCompatActivity{
                        t.setText(destination);
                String imageUrl=passengers.getImage();
                Glide.with(i).load(imageUrl).into(i);
+
             }
         }
     }

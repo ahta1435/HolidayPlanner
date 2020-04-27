@@ -11,12 +11,14 @@ public class Passengers {
     private String image;
     private int res;
     private String seats;
+    private String SeatId;
+    private String BusId;
     public  Passengers(){
 
     }
 
     public Passengers(String name, String bookingId, String age, String planeId, int count, String gender,String starting,String destination
-                                 ,String image,int res,String seats) {
+                                 ,String image,int res,String seats,String SeatId,String BusId) {
         this.name = name;
         this.bookingId = bookingId;
         this.age = age;
@@ -28,8 +30,25 @@ public class Passengers {
         this.image=image;
         this.res=res;
         this.seats=seats;
+        this.SeatId=SeatId;
+        this.BusId=BusId;
     }
 
+    public String getBusId() {
+        return BusId;
+    }
+
+    public void setBusId(String busId) {
+        BusId = busId;
+    }
+
+    public String getSeatId() {
+        return SeatId;
+    }
+
+    public void setSeatId(String seatId) {
+        SeatId = seatId;
+    }
     public int getRes() {
         return res;
     }

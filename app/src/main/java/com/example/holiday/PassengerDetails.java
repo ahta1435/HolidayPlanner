@@ -119,9 +119,6 @@ public class PassengerDetails extends AppCompatActivity {
                              }
                          });
                      }
-                     else{
-                       Toast.makeText(PassengerDetails.this,"already booked",Toast.LENGTH_LONG).show();
-                     }
                  }
                  @Override
                  public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -176,6 +173,7 @@ public class PassengerDetails extends AppCompatActivity {
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
                                 Toast.makeText(PassengerDetails.this, "BOOKING DONE SUCCESSFULLY", Toast.LENGTH_LONG).show();
+                                finish();
                             } else {
                                    String error=task.getException().getMessage();
                                 Toast.makeText(PassengerDetails.this, "Error:"+error, Toast.LENGTH_LONG).show();

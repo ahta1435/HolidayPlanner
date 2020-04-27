@@ -108,9 +108,6 @@ public class PassengerDetailsForBusActivity extends AppCompatActivity {
                                 }
                             });
                         }
-                        else{
-                            Toast.makeText(PassengerDetailsForBusActivity.this,"already booked",Toast.LENGTH_LONG).show();
-                        }
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -158,20 +155,19 @@ public class PassengerDetailsForBusActivity extends AppCompatActivity {
         String passengerAges=age.toString();
         String passengerGender=gender.toString();
         if(!TextUtils.isEmpty(passengerNames)&&!TextUtils.isEmpty(passengerAges)&&!TextUtils.isEmpty(passengerGender)) {
+            String SeatId=databaseReference1.push().getKey();
+            BookedSeats bookedSeats=new BookedSeats(items);
             String BookingId = databaseReference.push().getKey();
             AddBusBooking addBooking = new AddBusBooking(passengerNames,BookingId,passengerAges,DocId
                     ,count,passengerGender,starting,destination
-                    ,image,seatBooked,res);
+                    ,image,seatBooked,res,SeatId);
             databaseReference.child(UserId).child(TripId).setValue(addBooking).
                     addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                String id=databaseReference1.push().getKey();
-                                BookedSeats bookedSeats=new BookedSeats(items);
-                                databaseReference1.child(DocId).child(id).setValue(bookedSeats);
+                                databaseReference1.child(DocId).child(SeatId).setValue(bookedSeats);
                                 Toast.makeText(PassengerDetailsForBusActivity.this, "BOOKING DONE SUCCESSFULLY", Toast.LENGTH_LONG).show();
-                                finish();
                             } else {
                                 String error=task.getException().getMessage();
                                 Toast.makeText(PassengerDetailsForBusActivity.this, "Error:"+error, Toast.LENGTH_LONG).show();

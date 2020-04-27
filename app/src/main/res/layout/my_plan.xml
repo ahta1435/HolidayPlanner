@@ -109,7 +109,7 @@
                 android:layout_marginLeft="120dp"
                 android:padding="16dp"
                 android:text="Travel"
-                android:id="@+id/btn_book"
+                android:id="@+id/btn_booking"
                 android:background="@drawable/btn_travel"
                 />
         </LinearLayout>

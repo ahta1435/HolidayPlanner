@@ -102,6 +102,7 @@ public class FlightActivity extends AppCompatActivity implements DatePickerDialo
                    intent.putExtra("id",res);
                    intent.putExtra("destinationAirport",destinationAirport);
                    intent.putExtra("dateOfJourney",dateOfJourney);
+                   finish();
                    startActivity(intent);
                }else{
                    Toast.makeText(FlightActivity.this,"Fields Can't be left empty",Toast.LENGTH_LONG).show();

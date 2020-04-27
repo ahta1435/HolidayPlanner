@@ -19,8 +19,9 @@
             android:id="@+id/means"
             android:layout_width="75dp"
             android:layout_height="75dp"
+            android:layout_marginBottom="16dp"
             android:padding="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/cancel_ticket"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -30,7 +31,6 @@
             android:layout_height="50dp"
             android:background="@drawable/btn_bg"
             android:padding="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/journey_to"
             app:layout_constraintStart_toEndOf="@+id/means"
             app:layout_constraintTop_toTopOf="parent" />
@@ -43,16 +43,28 @@
             android:layout_marginRight="16dp"
             android:background="@drawable/btn_bg"
             android:padding="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/textView8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Tap to see ticket details"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/journey_from_airport" />
+            app:layout_constraintStart_toEndOf="@+id/cancel_ticket"
+            app:layout_constraintTop_toBottomOf="@+id/journey_to" />
+
+        <Button
+            android:id="@+id/cancel_ticket"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_marginTop="16dp"
+            android:text="Cancel"
+            android:background="@drawable/btn_del"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

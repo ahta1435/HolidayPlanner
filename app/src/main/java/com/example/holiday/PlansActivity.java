@@ -40,6 +40,7 @@ public class PlansActivity extends AppCompatActivity{
    private DatabaseReference databaseReference;
    private FirebaseAuth mAuth;
    private FirebaseRecyclerAdapter<MyPlans,PlansViewHolder> firebaseRecyclerAdapter;
+   private int i=1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,14 +99,14 @@ public class PlansActivity extends AppCompatActivity{
                                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                         @Override
                                                         public void onComplete(@NonNull Task<Void> task) {
-                                                               if(task.isSuccessful()){
-                                                                   Toast.makeText(PlansActivity.this,"Successfully cancelled",
-                                                                           Toast.LENGTH_LONG).show();
-                                                               }else{
-                                                                   String error=task.getException().getMessage();
-                                                                   Toast.makeText(PlansActivity.this,"Error:"+error,
-                                                                           Toast.LENGTH_LONG).show();
-                                                               }
+                                                            if (task.isSuccessful()) {
+                                                                Toast.makeText(PlansActivity.this, "Successfully cancelled",
+                                                                        Toast.LENGTH_LONG).show();
+                                                            } else {
+                                                                String error = task.getException().getMessage();
+                                                                Toast.makeText(PlansActivity.this, "Error:" + error,
+                                                                        Toast.LENGTH_LONG).show();
+                                                            }
                                                         }
                                                     });
                                         }
@@ -117,29 +118,30 @@ public class PlansActivity extends AppCompatActivity{
                                                         .child("YourTrip").child(userid)
                                                         .child(getRef(position).getKey()).toString();
                                             String[] id=list.split("/");
-                                            FirebaseDatabase.getInstance().getReference().child("BooKings").child(userid)
-                                                    .child(id[5]).addValueEventListener(new ValueEventListener() {
-                                                @Override
-                                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                                    if(!dataSnapshot.exists()){
-                                                        //splitting the string to get only the specified trip.
-                                                        Intent intent=new Intent(PlansActivity.this,BookingActivity.class);
-                                                        intent.putExtra("TripId", id[5]);
-                                                        startActivity(intent);
-                                                    }else{
-                                                        Toast.makeText(PlansActivity.this,"Already Booked,Go to My Bookings",
-                                                                Toast.LENGTH_LONG).show();
+                                                FirebaseDatabase.getInstance().getReference().child("BooKings").child(userid)
+                                                        .child(id[5]).addValueEventListener(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                        if (!dataSnapshot.exists()) {
+                                                            //splitting the string to get only the specified trip.
+                                                            Intent intent = new Intent(PlansActivity.this, BookingActivity.class);
+                                                            intent.putExtra("TripId", id[5]);
+                                                            startActivity(intent);
+                                                        } else {
+                                                            Toast.makeText(PlansActivity.this, "Already Booked,Go to My Bookings",
+                                                                    Toast.LENGTH_LONG).show();
+                                                        }
                                                     }
-                                                }
 
-                                                @Override
-                                                public void onCancelled(@NonNull DatabaseError databaseError) {
-                                                    String Error=databaseError.toString();
-                                                    Toast.makeText(PlansActivity.this,"Error:"+Error,Toast.LENGTH_LONG).show();
-                                                }
-                                            });
+                                                    @Override
+                                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                                                        String Error = databaseError.toString();
+                                                        Toast.makeText(PlansActivity.this, "Error:" + Error, Toast.LENGTH_LONG).show();
+                                                    }
+                                                });
+                                            }
 
-                                        }
+
                                     });
                                       holder.setMyPlans(model);
             }
@@ -172,7 +174,7 @@ public class PlansActivity extends AppCompatActivity{
             duration=itemView.findViewById(R.id.gender);
             budget=itemView.findViewById(R.id.budget_of_trip);
             btn_cancel=itemView.findViewById(R.id.btn_del);
-            btn_book=itemView.findViewById(R.id.btn_book);
+            btn_book=itemView.findViewById(R.id.btn_booking);
 
         }
         void setMyPlans(MyPlans myPlans) {

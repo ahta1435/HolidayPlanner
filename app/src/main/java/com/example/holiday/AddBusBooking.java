@@ -12,12 +12,13 @@ public class AddBusBooking {
     private String image;
     private String seats;
     private int res;
+    private String SeatId;
     public AddBusBooking(){
 
     }
     public AddBusBooking(String name, String bookingId, String age,
                          String busId, int count, String gender, String starting,
-                         String destination, String image, String seats,int res) {
+                         String destination, String image, String seats,int res,String SeatId) {
         Name = name;
         this.bookingId = bookingId;
         Age = age;
@@ -29,6 +30,15 @@ public class AddBusBooking {
         this.image = image;
         this.seats = seats;
         this.res=res;
+        this.SeatId=SeatId;
+    }
+
+    public String getSeatId() {
+        return SeatId;
+    }
+
+    public void setSeatId(String seatId) {
+        SeatId = seatId;
     }
 
     public int getRes() {

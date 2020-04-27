@@ -102,7 +102,9 @@ public class BusActivity extends AppCompatActivity implements DatePickerDialog.O
                     intent.putExtra("id",res);
                     intent.putExtra("destinationBusPoint",destinationBusStand);
                     intent.putExtra("dateOfJourney",dateOfJourney);
+                    finish();
                     startActivity(intent);
+
                 }else{
                     Toast.makeText(BusActivity.this,"Fields Can't be left empty",Toast.LENGTH_LONG).show();
                 }
