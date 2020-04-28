@@ -69,7 +69,7 @@ public class MyBookingsActivity extends AppCompatActivity{
         firebaseRecyclerAdapter=new FirebaseRecyclerAdapter<Passengers, TicketHolder>(firebaseRecyclerOptions) {
             @Override
             protected void onBindViewHolder(@NonNull TicketHolder holder, int position, @NonNull Passengers model) {
-                             holder.itemView.setOnClickListener(new View.OnClickListener() {
+                             holder.view_details.setOnClickListener(new View.OnClickListener() {
                                  @Override
                                  public void onClick(View v) {
                                      String list= FirebaseDatabase.getInstance().getReference()
@@ -155,13 +155,14 @@ public class MyBookingsActivity extends AppCompatActivity{
     public static class TicketHolder extends RecyclerView.ViewHolder{
               private TextView s,t;
               private ImageView i;
-              private Button btn_cancel_ticket;
+              private Button btn_cancel_ticket,view_details;
             public TicketHolder(@NonNull View itemView) {
                 super(itemView);
                 s=(TextView)itemView.findViewById(R.id.journey_from_airport);
                 t=(TextView)itemView.findViewById(R.id.journey_to);
                 i=(ImageView) itemView.findViewById(R.id.means);
                 btn_cancel_ticket=(Button)itemView.findViewById(R.id.cancel_ticket);
+                view_details=(Button)itemView.findViewById(R.id.view_detail_of_ticket);
 
             }
            public void SetPassenger(Passengers passengers){

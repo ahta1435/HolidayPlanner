@@ -41,7 +41,6 @@ public class TicketDetailsActivity extends AppCompatActivity {
         databaseReference= FirebaseDatabase.getInstance().getReference();
         FirebaseUser user=mAuth.getCurrentUser();
         String  UserId=user.getUid();
-        btn_cancel_ticket=(Button)findViewById(R.id.cancel_ticket);
         DisplayTicket(UserId, Id);
     }
     private void DisplayTicket(String userId, String id) {
