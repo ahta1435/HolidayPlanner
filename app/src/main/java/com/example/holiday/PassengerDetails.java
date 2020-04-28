@@ -95,39 +95,40 @@ public class PassengerDetails extends AppCompatActivity {
        book.setOnClickListener(new View.OnClickListener() {
          @Override
            public void onClick(View v) {
-             databaseReference.child(UserId).child(tripId).addValueEventListener(new ValueEventListener() {
-                 @Override
-                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                     if(!dataSnapshot.exists()){
-                         filepath.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                             @Override
-                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                 filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+             databaseReference.child(UserId).child(tripId).
+                     addListenerForSingleValueEvent(new ValueEventListener() {
+                         @Override
+                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                             if(!dataSnapshot.exists()){
+                                 filepath.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                      @Override
-                                     public void onSuccess(Uri uri) {
-                                       String image=String.valueOf(uri);
-                                       doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                                           @Override
-                                           public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                                  String starting=documentSnapshot.getString("starting");
-                                                  String destination=documentSnapshot.getString("destination");
-                                                  Book(UserId,PlaneId,tripId,starting,destination,image,res);
-                                           }
-                                       });
+                                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                         filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                             @Override
+                                             public void onSuccess(Uri uri) {
+                                                 String image=String.valueOf(uri);
+                                                 doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                                     @Override
+                                                     public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                                         String starting=documentSnapshot.getString("starting");
+                                                         String destination=documentSnapshot.getString("destination");
+                                                         Book(UserId,PlaneId,tripId,starting,destination,image,res);
+                                                     }
+                                                 });
+                                             }
+                                         });
                                      }
                                  });
                              }
-                         });
-                     }
-                 }
-                 @Override
-                 public void onCancelled(@NonNull DatabaseError databaseError) {
-                      String error=databaseError.toString();
-                     Toast.makeText(PassengerDetails.this,"Error:"+error,Toast.LENGTH_LONG).show();
-                 }
-             });
+                         }
 
-          }
+                         @Override
+                         public void onCancelled(@NonNull DatabaseError databaseError) {
+                             String error=databaseError.toString();
+                             Toast.makeText(PassengerDetails.this,"Error:"+error,Toast.LENGTH_LONG).show();
+                         }
+                     });
+             }
         });
     }
     private void Book(String UserId,String PlaneId,String tripId,String starting,String destination,String image,int res) {

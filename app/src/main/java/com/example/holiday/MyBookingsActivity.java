@@ -94,18 +94,35 @@ public class MyBookingsActivity extends AppCompatActivity{
                                                          BusId = addBusBooking.getBusId();
                                                          SeatId = addBusBooking.getSeatId();
                                                          res = addBusBooking.getRes();
-                                                         databaseReference1.child("BookedSeats")
-                                                                 .child(BusId).child(SeatId).removeValue();
+                                                        if(res==2){
+                                                            FirebaseDatabase.getInstance().getReference()
+                                                                    .child("BookedSeats").child(BusId).child(SeatId)
+                                                                    .removeValue()
+                                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                        @Override
+                                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                                            if(task.isSuccessful()){
+                                                                                Toast.makeText(MyBookingsActivity.this, "Seats Released Successfully", Toast.LENGTH_LONG).show();
+                                                                            }
+                                                                        }
+                                                                    });
+                                                        }
                                                      }
                                                  }
-
                                                  @Override
                                                  public void onCancelled(@NonNull DatabaseError databaseError) {
 
                                                  }
                                              });
-                                      FirebaseDatabase.getInstance().getReference()
-                                             .child("BooKings").child(userId).child(getRef(position).getKey()).removeValue();
+                                     FirebaseDatabase.getInstance().getReference()
+                                             .child("BooKings").child(userId).child(getRef(position).getKey()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                         @Override
+                                         public void onComplete(@NonNull Task<Void> task) {
+                                             if(task.isSuccessful()){
+                                                 Toast.makeText(MyBookingsActivity.this, "Ticket SuccessFully Cancelled", Toast.LENGTH_LONG).show();
+                                             }
+                                         }
+                                     });
 
                                  }
                              });
