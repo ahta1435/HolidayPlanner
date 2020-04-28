@@ -8,53 +8,56 @@
 
     <GridLayout
         android:id="@+id/grid"
-        android:layout_width="350dp"
-        android:layout_height="445dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginRight="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/driver_icon">
 
         <ImageView
             android:id="@+id/s1"
-            android:layout_width="50dp"
-            android:layout_height="75dp"
+            android:layout_width="45dp"
+            android:layout_height="70dp"
             android:layout_row="0"
             android:layout_column="0"
             android:layout_gravity="fill"
+            android:layout_margin="2dp"
             android:padding="6dp"
             android:src="@drawable/chairs" />
 
         <ImageView
             android:id="@+id/s2"
-            android:layout_width="50dp"
-            android:layout_height="75dp"
+            android:layout_width="45dp"
+            android:layout_height="70dp"
             android:layout_row="0"
             android:layout_column="1"
             android:layout_gravity="fill"
+            android:layout_margin="2dp"
             android:padding="6dp"
             android:src="@drawable/chairs" />
 
         <ImageView
             android:id="@+id/s3"
-            android:layout_width="50dp"
-            android:layout_height="75dp"
+            android:layout_width="45dp"
+            android:layout_height="70dp"
             android:layout_row="0"
             android:layout_column="5"
             android:layout_gravity="fill"
+            android:layout_margin="2dp"
             android:padding="6dp"
             android:src="@drawable/chairs" />
 
         <ImageView
             android:id="@+id/s4"
-            android:layout_width="50dp"
-            android:layout_height="75dp"
+            android:layout_width="45dp"
+            android:layout_height="70dp"
             android:layout_row="0"
             android:layout_column="6"
+            android:layout_margin="2dp"
             android:padding="6dp"
             android:src="@drawable/chairs" />
 

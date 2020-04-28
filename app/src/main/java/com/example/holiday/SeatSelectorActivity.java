@@ -54,6 +54,7 @@ public class SeatSelectorActivity extends AppCompatActivity {
          final int childCount = grid.getChildCount();
         for (int i= 0; i < childCount; i++){
             ImageView container = (ImageView) grid.getChildAt(i);
+            container.setBackgroundResource(R.drawable.selected_seat_background);
             container.setOnClickListener(new View.OnClickListener(){
                 public void onClick(View view){
                 container.setBackgroundColor(getResources().getColor(R.color.colorAccent));
