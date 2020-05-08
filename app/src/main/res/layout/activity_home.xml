@@ -6,31 +6,18 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".HomeActivity">
-        <com.mancj.materialsearchbar.MaterialSearchBar
-            style="@style/MaterialSearchBarLight"
-            app:mt_speechMode="false"
-            app:mt_hint="Custom hint"
-            app:mt_maxSuggestionsCount="10"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_margin="16dp"
-            android:id="@+id/searchBar"
-            android:elevation="8dp"
-            app:mt_placeholder="Search"
-            app:mt_navIconEnabled="true"/>
 
-        <TextView
-            android:id="@+id/one"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="6dp"
-            android:layout_marginRight="16dp"
-            android:gravity="center"
-            android:layout_below="@+id/searchBar"
-            android:text="not sure?"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textSize="14sp" />
+    <TextView
+        android:id="@+id/one"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="16dp"
+        android:gravity="center"
+        android:text="not sure?"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textSize="14sp" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

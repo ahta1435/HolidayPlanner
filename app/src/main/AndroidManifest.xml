@@ -13,11 +13,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".PassengerDetailsForBusActivity"></activity>
+        <activity android:name=".AboutActivity"></activity>
+        <activity android:name=".PassengerDetailsForBusActivity" />
         <activity android:name=".SeatSelectorActivity" />
         <activity android:name=".BusRequestActivity" />
         <activity android:name=".TicketDetailsActivity" />
-        <activity android:name=".AllBookingActivity" />
         <activity android:name=".MyBookingsActivity" />
         <activity android:name=".PassengerDetails" />
         <activity android:name=".PlaneRequestActivity" />
@@ -38,7 +38,9 @@
         <activity android:name=".AccountsActivity" />
         <activity android:name=".PlansActivity" />
         <activity android:name=".ExploreActivity" />
-        <activity android:name=".HomeActivity" />
+        <activity
+            android:name=".HomeActivity"
+            android:theme="@style/theme" />
     </application>
 
 </manifest>

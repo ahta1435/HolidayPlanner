@@ -2,39 +2,69 @@ package com.example.holiday;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import com.android.volley.toolbox.HttpResponse;
-import com.google.android.gms.common.api.Status;
-import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.api.net.PlacesClient;
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
-import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.bumptech.glide.Glide;
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import java.util.Arrays;
-import java.util.List;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 public class ExploreActivity extends AppCompatActivity {
-    PlacesClient placesClient;
-    List<Place.Field> placeFields=Arrays.asList(Place.Field.ID,
-                                          Place.Field.NAME,
-                                             Place.Field.ADDRESS);
-    AutocompleteSupportFragment places_fragment;
+    private RecyclerView rview;
+    private FirestoreRecyclerAdapter<Places,PlacesViewHolder> firestoreRecyclerAdapter;
+    private FirebaseFirestore firebaseFirestore;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_explore);
         BottomNavigationView navigationView=findViewById(R.id.btm_nav);
-       initPlaces();
-       setUpPlaceAutocomplete();
+        rview=(RecyclerView)findViewById(R.id.list_places);
+        rview.setHasFixedSize(true);
+        rview.setLayoutManager(new LinearLayoutManager(this));
+        firebaseFirestore=FirebaseFirestore.getInstance();
+        CollectionReference collectionReference= firebaseFirestore.collection("places");
+        Query query=collectionReference;
+        FirestoreRecyclerOptions<Places> response = new FirestoreRecyclerOptions.Builder<Places>()
+                .setQuery(query, Places.class)
+                .build();
+        firestoreRecyclerAdapter =new FirestoreRecyclerAdapter<Places, PlacesViewHolder>(response) {
+            @Override
+            protected void onBindViewHolder(@NonNull PlacesViewHolder holder, int position, @NonNull Places model) {
+                              holder.setPlaces(model);
+                              holder.itemView.setOnClickListener(new View.OnClickListener() {
+                                  @Override
+                                  public void onClick(View v) {
+                                      DocumentSnapshot snapshot=getSnapshots().getSnapshot(holder.getAdapterPosition());
+                                      String docId=snapshot.getId();
+                                      Intent intent=new Intent(ExploreActivity.this,AboutActivity.class);
+                                      intent.putExtra("placeId",docId);
+                                      startActivity(intent);
+                                  }
+                              });
+            }
+            @NonNull
+            @Override
+            public PlacesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.list_places,parent,false);
+                return new PlacesViewHolder(view);
+            }
+        };
+        rview.setAdapter(firestoreRecyclerAdapter);
         Menu menu=navigationView.getMenu();
         MenuItem menuItem=menu.getItem(1);
         menuItem.setChecked(true);
@@ -54,27 +84,35 @@ public class ExploreActivity extends AppCompatActivity {
                 return false;
             }
         });
-
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        firestoreRecyclerAdapter.startListening();
     }
 
-    private void setUpPlaceAutocomplete() {
-        places_fragment=(AutocompleteSupportFragment)getSupportFragmentManager()
-                                      .findFragmentById(R.id.places_autocomplete_fragment);
-                   places_fragment.setPlaceFields(placeFields);
-                   places_fragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-                       @Override
-                       public void onPlaceSelected(@NonNull Place place) {
-                           Toast.makeText(ExploreActivity.this,""+place.getName(),Toast.LENGTH_SHORT).show();
-                       }
-                       @Override
-                       public void onError(@NonNull Status status) {
-                           Toast.makeText(ExploreActivity.this,""+status.getStatusMessage(),Toast.LENGTH_SHORT).show();
-                       }
-                   });
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(firestoreRecyclerAdapter!=null){
+            firestoreRecyclerAdapter.stopListening();
+        }
+    }
 
+    public  static class PlacesViewHolder extends RecyclerView.ViewHolder{
+        private ImageView pl;
+        private TextView text;
+        public PlacesViewHolder(@NonNull View itemView) {
+            super(itemView);
+            pl=itemView.findViewById(R.id.places);
+            text=itemView.findViewById(R.id.places_name);
+        }
+        void setPlaces(Places places){
+            String p=places.getName();
+            text.setText(p);
+            String imageUrl=places.getImages();
+            Glide.with(pl).load(imageUrl).into(pl);
+        }
     }
-    private void initPlaces() {
-        Places.initialize(this,getString(R.string.places_api_key));
-        placesClient=Places.createClient(this);
-    }
+
 }
