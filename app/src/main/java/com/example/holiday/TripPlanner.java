@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,7 +30,7 @@ public class TripPlanner extends AppCompatActivity implements MediumPickerDialog
     private EditText duration;
     private EditText budget;
     private ImageView means;
-    private ProgressDialog progressDialog;
+    private ProgressBar progressDialog;
     private Button submit;
     private Uri imageUri=null;
     private DatabaseReference databaseReference;
@@ -39,7 +40,6 @@ public class TripPlanner extends AppCompatActivity implements MediumPickerDialog
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_planner);
-        progressDialog = new ProgressDialog(this);
         storageReference = FirebaseStorage.getInstance().getReference().child("Means");
         databaseReference = FirebaseDatabase.getInstance().getReference().child("YourTrip");
         starting = (EditText) findViewById(R.id.starting_of_trip);
@@ -91,7 +91,6 @@ public class TripPlanner extends AppCompatActivity implements MediumPickerDialog
                     });
                 }
             });
-
     }
     public void startMediumPicker() {
         MediumPickerDialog mediumPickerDialog = new MediumPickerDialog();

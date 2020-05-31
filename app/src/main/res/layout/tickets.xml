@@ -19,31 +19,56 @@
             android:id="@+id/means"
             android:layout_width="75dp"
             android:layout_height="75dp"
+            android:layout_marginTop="10dp"
             android:layout_marginBottom="16dp"
             android:padding="16dp"
             app:layout_constraintBottom_toTopOf="@+id/cancel_ticket"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <ImageView
+            android:id="@+id/arrowToSign"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/arrows"
+            app:layout_constraintEnd_toStartOf="@+id/journey_to"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/journey_from_airport"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:background="@drawable/btn_bg"
-            android:padding="16dp"
-            app:layout_constraintEnd_toStartOf="@+id/journey_to"
-            app:layout_constraintStart_toEndOf="@+id/means"
+            android:layout_marginTop="10dp"
+            android:padding="6dp"
+            android:textAllCaps="true"
+            android:textColor="@color/colorDark"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toStartOf="@+id/arrowToSign"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/journey_to"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:background="@drawable/btn_bg"
-            android:padding="16dp"
+            android:layout_marginTop="10dp"
+            android:padding="6dp"
+            android:textAllCaps="true"
+            android:textColor="@color/colorDark"
+            android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/date_of_ticket"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:padding="6dp"
+            android:textAllCaps="true"
+            android:textColor="@color/colorDark"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toStartOf="@+id/journey_from_airport"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button

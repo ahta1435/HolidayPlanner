@@ -24,6 +24,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.Timestamp;
+import org.w3c.dom.Text;
 
 public class BusRequestActivity extends AppCompatActivity {
     private RecyclerView rView;
@@ -37,13 +39,15 @@ public class BusRequestActivity extends AppCompatActivity {
         String destinationPoint=getIntent().getStringExtra("destinationBusPoint");
         String TripId=getIntent().getStringExtra("TripId");
         final int res=getIntent().getIntExtra("id",0);
+        String doj=getIntent().getStringExtra("dateOfJourney");
         rView=(RecyclerView)findViewById(R.id.bus_recycler);
         rView.setLayoutManager(new LinearLayoutManager(this));
         rView.setHasFixedSize(true);
         firebaseFirestore=FirebaseFirestore.getInstance();
         CollectionReference collectionReference=firebaseFirestore.collection("Buses");
         Query query=collectionReference.whereEqualTo("starting",startPoint)
-                     .whereEqualTo("destination",destinationPoint);
+                     .whereEqualTo("destination",destinationPoint)
+                      .whereEqualTo("time",doj);
         FirestoreRecyclerOptions<Buses> response=new FirestoreRecyclerOptions.Builder<Buses>()
                 .setQuery(query,Buses.class)
                 .build();
@@ -101,11 +105,13 @@ public class BusRequestActivity extends AppCompatActivity {
          private TextView from;
          private TextView to;
          private TextView price;
+         private TextView date;
         public BusHolder(@NonNull View itemView) {
             super(itemView);
             from=(TextView)itemView.findViewById(R.id.From);
             to=(TextView)itemView.findViewById(R.id.to);
             price=(TextView)itemView.findViewById(R.id.price);
+            date=(TextView)itemView.findViewById(R.id.date_time);
         }
         void setBuses(Buses buses){
             String starting_stand=buses.getStarting();
@@ -114,6 +120,11 @@ public class BusRequestActivity extends AppCompatActivity {
             to.setText(destination_stand);
             int pr=buses.getPrice();
             price.setText("$"+pr);
+            Timestamp doj=buses.getDateAndTime();
+            String[] str=doj.toDate().toString().split(" ");
+            StringBuilder str1=new StringBuilder();
+            str1.append("Date:"+str[2]+" "+str[1]+"\n"+"Time:"+str[3]);
+            date.setText(str1);
         }
     }
 }

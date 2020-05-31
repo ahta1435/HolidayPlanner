@@ -18,6 +18,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -44,8 +45,13 @@ public class PlaneRequestActivity extends AppCompatActivity {
         plane.setHasFixedSize(true);
         plane.setLayoutManager(new LinearLayoutManager(this));
         firebaseFirestore=FirebaseFirestore.getInstance();
+        TextView text=(TextView)findViewById(R.id.text);
+        text.setText(DOJ);
       CollectionReference collectionReference= firebaseFirestore.collection("Planes");
-       Query query=collectionReference.whereEqualTo("starting",startAirport).whereEqualTo("destination",destinationAirport);;
+       Query query=collectionReference.
+               whereEqualTo("starting",startAirport).
+               whereEqualTo("destination",destinationAirport)
+                 .whereEqualTo("date",DOJ);
                 FirestoreRecyclerOptions<Planes> response = new FirestoreRecyclerOptions.Builder<Planes>()
                         .setQuery(query, Planes.class)
                         .build();
@@ -97,13 +103,14 @@ public class PlaneRequestActivity extends AppCompatActivity {
     }
 
     public static class PlaneViewHolder extends RecyclerView.ViewHolder{
-        private TextView  starting,ending,price;
+        private TextView  starting,ending,price,date;
         private CardView book;
         public PlaneViewHolder(@NonNull View itemView) {
             super(itemView);
             starting=(TextView)itemView.findViewById(R.id.From);
             ending=(TextView)itemView.findViewById(R.id.to);
             price=(TextView)itemView.findViewById(R.id.price);
+            date=(TextView)itemView.findViewById(R.id.date_time);
            book=(CardView)itemView.findViewById(R.id.btn_plane_search);
         }
         void setPlanes(Planes planes){
@@ -111,6 +118,11 @@ public class PlaneRequestActivity extends AppCompatActivity {
             starting.setText(st);
             String dest=planes.getDestination();
             ending.setText(dest);
+            Timestamp doj=planes.getDateAndTime();
+            String[] str=doj.toDate().toString().split(" ");
+            StringBuilder str1=new StringBuilder();
+            str1.append("Date:"+str[2]+" "+str[1]+"\n"+"Time:"+str[3]);
+            date.setText(str1);
             int bud=planes.getPrice();
             price.setText("$"+bud);
 

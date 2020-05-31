@@ -14,36 +14,65 @@
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
        android:orientation="horizontal">
-
        <TextView
            android:id="@+id/From"
            android:layout_width="wrap_content"
-           android:layout_height="100dp"
-           android:gravity="center|center_horizontal"
+           android:layout_height="wrap_content"
+           android:layout_marginStart="10dp"
+           android:layout_marginLeft="10dp"
+           android:layout_marginTop="10dp"
            android:padding="6dp"
-           android:textSize="14sp"
-           app:layout_constraintBottom_toBottomOf="parent"
+           android:textAllCaps="true"
+           android:textColor="@color/colorDark"
+           android:textSize="20sp"
+           app:layout_constraintEnd_toStartOf="@+id/arrow"
            app:layout_constraintStart_toStartOf="parent"
            app:layout_constraintTop_toTopOf="parent" />
 
        <TextView
            android:id="@+id/to"
            android:layout_width="wrap_content"
-           android:layout_height="100dp"
-           android:gravity="center|center_horizontal"
+           android:layout_height="wrap_content"
+           android:layout_marginTop="10dp"
            android:padding="6dp"
-           android:textSize="14sp"
-           app:layout_constraintBottom_toBottomOf="parent"
+           android:textAllCaps="true"
+           android:textColor="@color/colorDark"
+           android:textSize="20sp"
+           app:layout_constraintStart_toEndOf="@+id/arrow"
+           app:layout_constraintTop_toTopOf="parent" />
+
+       <ImageView
+           android:id="@+id/arrow"
+           android:layout_width="20dp"
+           android:layout_height="20dp"
+           android:layout_marginTop="20dp"
+           android:src="@drawable/arrows"
+           app:layout_constraintEnd_toStartOf="@+id/to"
            app:layout_constraintStart_toEndOf="@+id/From"
            app:layout_constraintTop_toTopOf="parent" />
 
        <TextView
-           android:id="@+id/price"
-           android:layout_width="112dp"
+           android:id="@+id/date_time"
+           android:layout_width="wrap_content"
            android:layout_height="wrap_content"
-           android:padding="6dp"
-           android:textSize="14sp"
+           android:layout_marginEnd="10dp"
+           android:layout_marginRight="10dp"
+           android:layout_marginBottom="10dp"
+           android:textColor="@color/colorDark"
            app:layout_constraintBottom_toBottomOf="parent"
-           app:layout_constraintEnd_toEndOf="parent" />
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintTop_toBottomOf="@+id/price"
+           app:layout_constraintVertical_bias="0.0" />
+       <TextView
+           android:id="@+id/price"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_marginTop="15dp"
+           android:padding="6dp"
+           android:textSize="17sp"
+           android:textColor="@color/colorDark"
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintTop_toTopOf="parent" />
+
    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

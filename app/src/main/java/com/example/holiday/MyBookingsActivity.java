@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SearchRecentSuggestionsProvider;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,10 +25,16 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.time.LocalDate;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,11 +42,17 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 public class MyBookingsActivity extends AppCompatActivity{
     private RecyclerView recyclerView;
@@ -48,7 +62,6 @@ public class MyBookingsActivity extends AppCompatActivity{
     private String BusId;
     private String SeatId;
     private int res;
-    private DatabaseReference databaseReference1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +70,6 @@ public class MyBookingsActivity extends AppCompatActivity{
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
         String userId = user.getUid();
-        databaseReference1= FirebaseDatabase.getInstance().getReference();
         databaseReference = FirebaseDatabase.getInstance().getReference();
         recyclerView=(RecyclerView)findViewById(R.id.tickets);
         recyclerView.setHasFixedSize(true);
@@ -117,11 +129,13 @@ public class MyBookingsActivity extends AppCompatActivity{
                                                  }
                                              });
                                      FirebaseDatabase.getInstance().getReference()
-                                             .child("BooKings").child(userId).child(getRef(position).getKey()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                             .child("BooKings").child(userId).child(getRef(position).getKey()).removeValue()
+                                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                          @Override
                                          public void onComplete(@NonNull Task<Void> task) {
                                              if(task.isSuccessful()){
-                                                 Toast.makeText(MyBookingsActivity.this, "Ticket SuccessFully Cancelled", Toast.LENGTH_LONG).show();
+                                                 Toast.makeText(MyBookingsActivity.this,
+                                                         "Ticket SuccessFully Cancelled", Toast.LENGTH_LONG).show();
                                              }
                                          }
                                      });
@@ -155,7 +169,7 @@ public class MyBookingsActivity extends AppCompatActivity{
         }
     }
     public static class TicketHolder extends RecyclerView.ViewHolder{
-              private TextView s,t;
+              private TextView s,t,ticket;
               private ImageView i;
               private Button btn_cancel_ticket,view_details;
             public TicketHolder(@NonNull View itemView) {
@@ -165,14 +179,91 @@ public class MyBookingsActivity extends AppCompatActivity{
                 i=(ImageView) itemView.findViewById(R.id.means);
                 btn_cancel_ticket=(Button)itemView.findViewById(R.id.cancel_ticket);
                 view_details=(Button)itemView.findViewById(R.id.view_detail_of_ticket);
+                ticket=(TextView)itemView.findViewById(R.id.date_of_ticket);
 
             }
            public void SetPassenger(Passengers passengers){
-
+               FirebaseFirestore firebaseFirestore=FirebaseFirestore.getInstance();
+               @SuppressLint("SimpleDateFormat") SimpleDateFormat dateTimeInGMT = new SimpleDateFormat("yyyy-MMM-dd");
+               dateTimeInGMT.setTimeZone(TimeZone.getTimeZone("GMT"));
+               String TodaysDate=dateTimeInGMT.format(new Date());
+               HashMap<String,Integer> Months=new HashMap<>();
+               Months.put("JAN",1);
+               Months.put("FEB",2);
+               Months.put("MAR",3);
+               Months.put("APR",4);
+               Months.put("MAY",5);
+               Months.put("JUN",6);
+               Months.put("JUL",7);
+               Months.put("AUG",8);
+               Months.put("SEP",9);
+               Months.put("OCT",10);
+               Months.put("NOV",11);
+               Months.put("DEC",12);
+               String[] str=TodaysDate.split("-");
+                int curday=Integer.parseInt(str[2]);
+                String currentMonth=str[1];
+                int runningmonth=Months.get(currentMonth);
                String start=passengers.getStarting();
                          s.setText(start);
                String destination=passengers.getDestination();
                        t.setText(destination);
+                       int res=passengers.getRes();
+                           if(res==2){
+                              String busId=passengers.getBusId();
+                               DocumentReference documentReference=firebaseFirestore.collection("Buses")
+                                       .document(busId);
+                               documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                   @Override
+                                   public void onSuccess(DocumentSnapshot documentSnapshot){
+                                       ///for ticket day and month
+                                       ///
+                                       Timestamp timestamp=documentSnapshot.getTimestamp("dateAndTime");
+                                       String str=timestamp.toDate().toString();
+                                       String[] str1=str.split(" ");
+                                       StringBuilder DateOfTicket=new StringBuilder();
+                                       DateOfTicket.append(str1[2]+"-"+str1[1]+"-"+str1[5]);//STR1[2]-->DATE
+                                                         // ,STR1[1]-->MONTH STR1[5]=YEAR;
+                                       int ticketday=Integer.parseInt(str1[2]);
+                                       String ticketmonth=str1[1];
+                                       ///
+                                       ///current date and month
+                                       ///
+                                       ////
+                                       ticket.setText(DateOfTicket);
+                                       /*if(curday>ticketday){
+                                           int runningmonth=Months.get("curmonth");
+                                           int monthOfTicket=Months.get("ticketmonth");
+                                           if(runningmonth>=monthOfTicket){
+                                               ticket.setText("Today is ahead of that day");
+                                           }else{
+                                               ticket.setText(str1[2]+"\n"+str1[1]);
+                                           }
+                                       }*/
+                                      // if(curday<ticketday){
+                                        //   ticket.setText(str1[2]+"\n"+str1[1]);
+                                      // }
+
+                                   }
+                               });
+                           }
+                           if(res==1){
+                               String planeId=passengers.getPlaneId();
+                               DocumentReference documentReference=firebaseFirestore.collection("Planes")
+                                       .document(planeId);
+                               documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                   @Override
+                                   public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                       Timestamp timestamp=documentSnapshot.getTimestamp("dateAndtime");
+                                       String str=timestamp.toDate().toString();
+                                       String[] str1=str.split(" ");
+                                       StringBuilder stringBuilder=new StringBuilder();
+                                       //str1[2]+"\n"+
+                                      // stringBuilder.append(str1[1]);
+                                       //ticket.setText(str1[5]);
+                                   }
+                               });
+                           }
                String imageUrl=passengers.getImage();
                Glide.with(i).load(imageUrl).into(i);
 
