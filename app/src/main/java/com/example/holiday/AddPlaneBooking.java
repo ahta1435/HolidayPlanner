@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AddBooking  {
+public class AddPlaneBooking {
     private String Name;
     private String bookingId;
     private String Age;
@@ -16,12 +16,12 @@ public class AddBooking  {
     private String destination;
     private String image;
     private int res;
-    public AddBooking(){
+    public AddPlaneBooking(){
 
     }
 
-    public AddBooking(String name, String bookingId, String age, String planeId, String gender,int count,String starting,String destination,
-                                String image,int res) {
+    public AddPlaneBooking(String name, String bookingId, String age, String planeId, String gender, int count, String starting, String destination,
+                           String image, int res) {
         Name = name;
         this.bookingId = bookingId;
         Age = age;

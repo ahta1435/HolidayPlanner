@@ -65,7 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:padding="6dp"
-            android:textAllCaps="true"
+            android:textAllCaps="false"
             android:textColor="@color/colorDark"
             android:textSize="20sp"
             app:layout_constraintEnd_toStartOf="@+id/journey_from_airport"

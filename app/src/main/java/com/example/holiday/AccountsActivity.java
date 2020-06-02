@@ -16,7 +16,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class AccountsActivity extends AppCompatActivity {
-     private Button logOut,booking;
+     private Button logOut,booking,history;
      private FirebaseAuth mAuth;
      private TextView val;
     @Override
@@ -25,6 +25,7 @@ public class AccountsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_accounts);
         logOut=(Button)findViewById(R.id.logout_btn);
         booking=(Button)findViewById(R.id.MyBookings);
+        history=(Button)findViewById(R.id.History);
         mAuth=FirebaseAuth.getInstance();
         BottomNavigationView navigationView=findViewById(R.id.btm_nav);
         Menu menu=navigationView.getMenu();
@@ -64,6 +65,12 @@ public class AccountsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
+      history.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+              Intent intent=new Intent(AccountsActivity.this,HistoryOfBookings.class);
+              startActivity(intent);
+          }
+      });
     }
 }

@@ -1,57 +1,40 @@
 package com.example.holiday;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.SearchRecentSuggestionsProvider;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.time.LocalDate;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.TimeZone;
 
 public class MyBookingsActivity extends AppCompatActivity{
@@ -81,6 +64,189 @@ public class MyBookingsActivity extends AppCompatActivity{
         firebaseRecyclerAdapter=new FirebaseRecyclerAdapter<Passengers, TicketHolder>(firebaseRecyclerOptions) {
             @Override
             protected void onBindViewHolder(@NonNull TicketHolder holder, int position, @NonNull Passengers model) {
+                ///filtering of tickets
+                FirebaseFirestore firebaseFirestore=FirebaseFirestore.getInstance();
+                @SuppressLint("SimpleDateFormat") SimpleDateFormat dateTimeInGMT = new SimpleDateFormat("yyyy-MM-dd");
+                dateTimeInGMT.setTimeZone(TimeZone.getTimeZone("GMT"));
+                String TodaysDate=dateTimeInGMT.format(new Date());
+                HashMap<String,Integer> Months=new HashMap<>();
+                Months.put("Jan",1);
+                Months.put("Feb",2);
+                Months.put("Mar",3);
+                Months.put("Apr",4);
+                Months.put("May",5);
+                Months.put("Jun",6);
+                Months.put("Jul",7);
+                Months.put("Aug",8);
+                Months.put("Sep",9);
+                Months.put("Oct",10);
+                Months.put("Nov",11);
+                Months.put("Dec",12);
+                String[] str=TodaysDate.split("-");
+                int currentDay=Integer.parseInt(str[2]);
+                int currentMonth=Integer.parseInt(str[1]);
+                int resId=model.getRes();
+                if(resId==2){
+                    String busId=model.getBusId();
+                    DocumentReference documentReference=firebaseFirestore.collection("Buses")
+                            .document(busId);
+                    documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot){
+                            Timestamp timestamp=documentSnapshot.getTimestamp("dateAndTime");
+                            String str=timestamp.toDate().toString();
+                            String[] str1=str.split(" ");
+                            StringBuilder DateOfTicket=new StringBuilder();
+                            DateOfTicket.append(str1[2]+"-"+str1[1]+"-"+str1[5]);//STR1[2]-->DATE
+                            // ,STR1[1]-->MONTH STR1[5]=YEAR;
+                            int ticketDay=Integer.parseInt(str1[2]);
+                            String ticketMonth=str1[1];
+                            int TicketMonthNumber=Months.get(ticketMonth);
+                            //
+                            /// checking of the date
+                            ///
+                            ////
+                            if(currentDay>ticketDay){
+                                if(currentMonth>=TicketMonthNumber){
+                                    String dateOfTicket=DateOfTicket.toString();
+                                    String name=model.getName();
+                                    String bookingId=model.getBookingId();
+                                    String busId=model.getBusId();
+                                    String start=model.getStarting();
+                                    String destination=model.getDestination();
+                                    String seatId=model.getSeatId();
+                                    String seat=model.getSeats();
+                                    String gender=model.getGender();
+                                    String age=model.getAge();
+                                    int count=model.getCount();
+                                    String image=model.getImage();
+                                    int res=model.getRes();
+                                    HistoryOfJourneyForBus historyOfJourney=new HistoryOfJourneyForBus(name,bookingId,age,image,count,gender
+                                                                    ,start,destination,res,seat,seatId,busId,dateOfTicket);
+                                    databaseReference.child("History").child(userId)
+                                            .child(getRef(position).getKey()).setValue(historyOfJourney);
+                                    FirebaseDatabase.getInstance().getReference()
+                                            .child("BookedSeats").child(model.getBusId()).child(model.getSeatId())
+                                            .removeValue();
+                                    databaseReference.child("YourTrip").child(userId)
+                                            .child(getRef(position).getKey()).removeValue();
+                                  databaseReference.child("BooKings").child(userId)
+                                           .child(getRef(position).getKey()).removeValue();
+                                }else{
+                                   holder.SetPassenger(model);
+                                }
+                            }
+                            if(currentDay<ticketDay) {
+                                if (currentMonth <= TicketMonthNumber) {
+                                    holder.SetPassenger(model);
+                                }else{
+                                    String dateOfTicket=DateOfTicket.toString();
+                                    String name=model.getName();
+                                    String bookingId=model.getBookingId();
+                                    String busId=model.getBusId();
+                                    String start=model.getStarting();
+                                    String destination=model.getDestination();
+                                    String seatId=model.getSeatId();
+                                    String seat=model.getSeats();
+                                    String gender=model.getGender();
+                                    String age=model.getAge();
+                                    int count=model.getCount();
+                                    String image=model.getImage();
+                                    int res=model.getRes();
+                                    HistoryOfJourneyForBus historyOfJourney=new HistoryOfJourneyForBus(name,bookingId,age,image,count,gender
+                                            ,start,destination,res,seat,seatId,busId,dateOfTicket);
+                                    databaseReference.child("History").child(userId)
+                                            .child(getRef(position).getKey()).setValue(historyOfJourney);
+                                    FirebaseDatabase.getInstance().getReference()
+                                            .child("BookedSeats").child(model.getBusId()).child(model.getSeatId())
+                                            .removeValue();
+                                    databaseReference.child("YourTrip").child(userId)
+                                            .child(getRef(position).getKey()).removeValue();
+                                    databaseReference.child("BooKings").child(userId)
+                                            .child(getRef(position).getKey()).removeValue();
+                                }
+                            }
+                        }
+                    });
+                }
+                if(resId==1){
+                    String planeId=model.getPlaneId();
+                    DocumentReference documentReference=firebaseFirestore.collection("Planes")
+                            .document(planeId);
+                    documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            Timestamp timestamp=documentSnapshot.getTimestamp("dateAndtime");
+                            String str=timestamp.toDate().toString();
+                            String[] str1=str.split(" ");
+                            StringBuilder DateOfTicket=new StringBuilder();
+                            DateOfTicket.append(str1[2]+"-"+str1[1]+"-"+str1[5]);//STR1[2]-->DATE
+                            // ,STR1[1]-->MONTH STR1[5]=YEAR;
+                            int ticketDay=Integer.parseInt(str1[2]);
+                            String ticketMonth=str1[1];
+                            int TicketMonthNumber=Months.get(ticketMonth);
+                            //
+                            /// checking of the date
+                            ///
+                            ////
+                            if(currentDay>ticketDay){
+                                if(currentMonth>=TicketMonthNumber){
+                                    String dateOfTicket=DateOfTicket.toString();
+                                    String name=model.getName();
+                                    String bookingId=model.getBookingId();
+                                    String planeId=model.getPlaneId();
+                                    String start=model.getStarting();
+                                    String destination=model.getDestination();
+                                    String gender=model.getGender();
+                                    String age=model.getAge();
+                                    int count=model.getCount();
+                                    String image=model.getImage();
+                                    int res=model.getRes();
+                                    HistoryOfJourneyForPlane historyOfJourney=new HistoryOfJourneyForPlane(name,bookingId,age,image,count,gender
+                                            ,start,destination,res,planeId,dateOfTicket);
+                                    databaseReference.child("History").child(userId)
+                                            .child(getRef(position).getKey()).setValue(historyOfJourney);
+                                    databaseReference.child("YourTrip").child(userId)
+                                            .child(getRef(position).getKey()).removeValue();
+                                    databaseReference.child("BooKings").child(userId)
+                                            .child(getRef(position).getKey()).removeValue();
+                                }else{
+                                    holder.SetPassenger(model);
+                                }
+                            }
+                            if(currentDay<ticketDay) {
+                                if (currentMonth <= TicketMonthNumber) {
+                                    holder.SetPassenger(model);
+                                }else{
+                                    String dateOfTicket=DateOfTicket.toString();
+                                    String name=model.getName();
+                                    String bookingId=model.getBookingId();
+                                    String planeId=model.getPlaneId();
+                                    String start=model.getStarting();
+                                    String destination=model.getDestination();
+                                    String gender=model.getGender();
+                                    String age=model.getAge();
+                                    int count=model.getCount();
+                                    String image=model.getImage();
+                                    int res=model.getRes();
+                                    HistoryOfJourneyForPlane historyOfJourney=new HistoryOfJourneyForPlane(name,bookingId,age,image,count,gender
+                                            ,start,destination,res,planeId,dateOfTicket);
+                                    databaseReference.child("History").child(userId)
+                                            .child(getRef(position).getKey()).setValue(historyOfJourney);
+                                    databaseReference.child("YourTrip").child(userId)
+                                            .child(getRef(position).getKey()).removeValue();
+                                    databaseReference.child("BooKings").child(userId)
+                                            .child(getRef(position).getKey()).removeValue();
+                                }
+                            }
+                        }
+                    });
+                }
+                                          ///
+                                         //showing the details
+                                          //
+                                         ///
+
                              holder.view_details.setOnClickListener(new View.OnClickListener() {
                                  @Override
                                  public void onClick(View v) {
@@ -142,7 +308,6 @@ public class MyBookingsActivity extends AppCompatActivity{
 
                                  }
                              });
-                              holder.SetPassenger(model);
             }
 
             @NonNull
@@ -184,26 +349,6 @@ public class MyBookingsActivity extends AppCompatActivity{
             }
            public void SetPassenger(Passengers passengers){
                FirebaseFirestore firebaseFirestore=FirebaseFirestore.getInstance();
-               @SuppressLint("SimpleDateFormat") SimpleDateFormat dateTimeInGMT = new SimpleDateFormat("yyyy-MMM-dd");
-               dateTimeInGMT.setTimeZone(TimeZone.getTimeZone("GMT"));
-               String TodaysDate=dateTimeInGMT.format(new Date());
-               HashMap<String,Integer> Months=new HashMap<>();
-               Months.put("JAN",1);
-               Months.put("FEB",2);
-               Months.put("MAR",3);
-               Months.put("APR",4);
-               Months.put("MAY",5);
-               Months.put("JUN",6);
-               Months.put("JUL",7);
-               Months.put("AUG",8);
-               Months.put("SEP",9);
-               Months.put("OCT",10);
-               Months.put("NOV",11);
-               Months.put("DEC",12);
-               String[] str=TodaysDate.split("-");
-                int curday=Integer.parseInt(str[2]);
-                String currentMonth=str[1];
-                int runningmonth=Months.get(currentMonth);
                String start=passengers.getStarting();
                          s.setText(start);
                String destination=passengers.getDestination();
@@ -216,34 +361,13 @@ public class MyBookingsActivity extends AppCompatActivity{
                                documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                    @Override
                                    public void onSuccess(DocumentSnapshot documentSnapshot){
-                                       ///for ticket day and month
-                                       ///
                                        Timestamp timestamp=documentSnapshot.getTimestamp("dateAndTime");
                                        String str=timestamp.toDate().toString();
                                        String[] str1=str.split(" ");
                                        StringBuilder DateOfTicket=new StringBuilder();
-                                       DateOfTicket.append(str1[2]+"-"+str1[1]+"-"+str1[5]);//STR1[2]-->DATE
+                                       DateOfTicket.append(str1[2]+"\n"+str1[1]+"\n"+str1[5]);//STR1[2]-->DATE
                                                          // ,STR1[1]-->MONTH STR1[5]=YEAR;
-                                       int ticketday=Integer.parseInt(str1[2]);
-                                       String ticketmonth=str1[1];
-                                       ///
-                                       ///current date and month
-                                       ///
-                                       ////
                                        ticket.setText(DateOfTicket);
-                                       /*if(curday>ticketday){
-                                           int runningmonth=Months.get("curmonth");
-                                           int monthOfTicket=Months.get("ticketmonth");
-                                           if(runningmonth>=monthOfTicket){
-                                               ticket.setText("Today is ahead of that day");
-                                           }else{
-                                               ticket.setText(str1[2]+"\n"+str1[1]);
-                                           }
-                                       }*/
-                                      // if(curday<ticketday){
-                                        //   ticket.setText(str1[2]+"\n"+str1[1]);
-                                      // }
-
                                    }
                                });
                            }
@@ -258,9 +382,8 @@ public class MyBookingsActivity extends AppCompatActivity{
                                        String str=timestamp.toDate().toString();
                                        String[] str1=str.split(" ");
                                        StringBuilder stringBuilder=new StringBuilder();
-                                       //str1[2]+"\n"+
-                                      // stringBuilder.append(str1[1]);
-                                       //ticket.setText(str1[5]);
+                                       stringBuilder.append(str1[2]+"\n"+str1[1]+"\n"+str1[5]);
+                                       ticket.setText(stringBuilder);
                                    }
                                });
                            }

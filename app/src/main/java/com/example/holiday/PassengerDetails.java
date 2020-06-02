@@ -3,10 +3,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentResolver;
-import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,7 +16,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -32,20 +28,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class PassengerDetails extends AppCompatActivity {
   public int i=1;
@@ -166,7 +157,7 @@ public class PassengerDetails extends AppCompatActivity {
         //String dest=destination.toString();
         if(!TextUtils.isEmpty(passengerNames)&&!TextUtils.isEmpty(passengerAges)&&!TextUtils.isEmpty(passengerGender)) {
             String BookingId = databaseReference.push().getKey();
-            AddBooking addBooking = new AddBooking(passengerNames,BookingId,passengerAges,PlaneId,passengerGender,count
+            AddPlaneBooking addBooking = new AddPlaneBooking(passengerNames,BookingId,passengerAges,PlaneId,passengerGender,count
                     ,starting,destination,image,res);
             databaseReference.child(UserId).child(tripId).setValue(addBooking).
                     addOnCompleteListener(new OnCompleteListener<Void>() {
