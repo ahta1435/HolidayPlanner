@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -158,23 +159,35 @@ public class PassengerDetailsForBusActivity extends AppCompatActivity {
         if(!TextUtils.isEmpty(passengerNames)&&!TextUtils.isEmpty(passengerAges)&&!TextUtils.isEmpty(passengerGender)) {
             String SeatId=databaseReference1.push().getKey();
             BookedSeats bookedSeats=new BookedSeats(items);
-            String BookingId = databaseReference.push().getKey();
-            AddBusBooking addBooking = new AddBusBooking(passengerNames,BookingId,passengerAges,DocId
-                    ,count,passengerGender,starting,destination
-                    ,image,seatBooked,res,SeatId);
-            databaseReference.child(UserId).child(TripId).setValue(addBooking).
-                    addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                databaseReference1.child(DocId).child(SeatId).setValue(bookedSeats);
-                                Toast.makeText(PassengerDetailsForBusActivity.this, "BOOKING DONE SUCCESSFULLY", Toast.LENGTH_LONG).show();
-                            } else {
-                                String error=task.getException().getMessage();
-                                Toast.makeText(PassengerDetailsForBusActivity.this, "Error:"+error, Toast.LENGTH_LONG).show();
-                            }
-                        }
-                    });
+            DocumentReference doc=firebaseFirestore.collection("Buses").document(DocId);
+             StringBuilder DateOfTicket=new StringBuilder();
+            doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    Timestamp timestamp = documentSnapshot.getTimestamp("dateAndTime");
+                    String str = timestamp.toDate().toString();
+                    String[] str1 = str.split(" ");
+                    DateOfTicket.append(str1[2] + "-" + str1[1] + "-" + str1[5]);
+                    String BookingId = databaseReference.push().getKey();
+                    AddBusBooking addBooking = new AddBusBooking(passengerNames,BookingId,passengerAges,DocId
+                            ,count,passengerGender,starting,destination
+                            ,image,seatBooked,res,SeatId,DateOfTicket.toString());
+                    databaseReference.child(UserId).child(TripId).setValue(addBooking).
+                            addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        databaseReference1.child(DocId).child(SeatId).setValue(bookedSeats);
+                                        Toast.makeText(PassengerDetailsForBusActivity.this, "BOOKING DONE SUCCESSFULLY", Toast.LENGTH_LONG).show();
+                                    } else {
+                                        String error=task.getException().getMessage();
+                                        Toast.makeText(PassengerDetailsForBusActivity.this, "Error:"+error, Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                            });
+                }
+            });
+
         }else{
             Toast.makeText(PassengerDetailsForBusActivity.this, "Input Field Cannot Be empty", Toast.LENGTH_LONG).show();
         }

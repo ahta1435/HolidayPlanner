@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -156,22 +157,35 @@ public class PassengerDetails extends AppCompatActivity {
        // String start=starting;
         //String dest=destination.toString();
         if(!TextUtils.isEmpty(passengerNames)&&!TextUtils.isEmpty(passengerAges)&&!TextUtils.isEmpty(passengerGender)) {
-            String BookingId = databaseReference.push().getKey();
-            AddPlaneBooking addBooking = new AddPlaneBooking(passengerNames,BookingId,passengerAges,PlaneId,passengerGender,count
-                    ,starting,destination,image,res);
-            databaseReference.child(UserId).child(tripId).setValue(addBooking).
-                    addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Toast.makeText(PassengerDetails.this, "BOOKING DONE SUCCESSFULLY", Toast.LENGTH_LONG).show();
-                                finish();
-                            } else {
-                                   String error=task.getException().getMessage();
-                                Toast.makeText(PassengerDetails.this, "Error:"+error, Toast.LENGTH_LONG).show();
-                            }
-                        }
-                    });
+            DocumentReference documentReference=firebaseFirestore.collection("Planes")
+                    .document(PlaneId);
+            documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                                             @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                     Timestamp timestamp = documentSnapshot.getTimestamp("dateAndtime");
+                     String str = timestamp.toDate().toString();
+                     String[] str1 = str.split(" ");
+                     StringBuilder DateOfTicket = new StringBuilder();
+                     DateOfTicket.append(str1[2] + "-" + str1[1] + "-" + str1[5]);
+                     String BookingId = databaseReference.push().getKey();
+                     AddPlaneBooking addBooking = new AddPlaneBooking(passengerNames,BookingId,passengerAges,PlaneId,passengerGender,count
+                                                                         ,starting,destination,image,res,DateOfTicket.toString());
+                     databaseReference.child(UserId).child(tripId).setValue(addBooking).
+                             addOnCompleteListener(new OnCompleteListener<Void>() {
+                                 @Override
+                                 public void onComplete(@NonNull Task<Void> task) {
+                                     if (task.isSuccessful()) {
+                                         Toast.makeText(PassengerDetails.this, "BOOKING DONE SUCCESSFULLY", Toast.LENGTH_LONG).show();
+                                         finish();
+                                     } else {
+                                         String error=task.getException().getMessage();
+                                         Toast.makeText(PassengerDetails.this, "Error:"+error, Toast.LENGTH_LONG).show();
+                                     }
+                                 }
+                             }); 
+                                                             }
+            });
+
         }else{
             Toast.makeText(PassengerDetails.this, "Input Field Cannot Be empty", Toast.LENGTH_LONG).show();
         }

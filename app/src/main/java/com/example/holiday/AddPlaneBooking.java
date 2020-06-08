@@ -16,12 +16,13 @@ public class AddPlaneBooking {
     private String destination;
     private String image;
     private int res;
+    private String date;
     public AddPlaneBooking(){
 
     }
 
     public AddPlaneBooking(String name, String bookingId, String age, String planeId, String gender, int count, String starting, String destination,
-                           String image, int res) {
+                           String image, int res,String date) {
         Name = name;
         this.bookingId = bookingId;
         Age = age;
@@ -32,6 +33,15 @@ public class AddPlaneBooking {
         this.destination=destination;
         this.image=image;
         this.res=res;
+        this.date=date;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public int getRes() {
